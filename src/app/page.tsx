@@ -4,7 +4,6 @@ import SubscriptionSection from '@/components/home-page/subscription/Subscriptio
 import FeaturesSection from '@/components/home-page/features/FeaturesSection'
 import NewsSection from '@/components/home-page/news/NewsSection'
 import RoomSection from '@/components/home-page/rooms/RoomSection'
-import Footer from '@/components/layouts/Footer'
 
 export default function Home() {
 	return (
@@ -27,9 +26,6 @@ export default function Home() {
 			<section className='bg-blue-50 flex flex-col justify-center'>
 				<SubscriptionSection />
 			</section>
-			<footer className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center'>
-				<Footer />
-			</footer>
 		</main>
 	)
 }

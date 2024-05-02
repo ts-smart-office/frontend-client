@@ -49,3 +49,12 @@ export const featuresContent = [
 			'Seamless booking an intuitive interface and calendar integration.',
 	},
 ]
+
+export const facilities = [
+	'Maximum Capacity 100',
+	'LCD Interactive 70',
+	'High Lumen Projector',
+	'AC',
+	'Free Access Wifi',
+	'Integrate Digital Ecosystem Tiga Serangkai',
+]

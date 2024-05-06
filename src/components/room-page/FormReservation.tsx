@@ -24,18 +24,23 @@ import { cn } from '@/lib/utils'
 import { CalendarIcon } from '@heroicons/react/24/outline'
 import { Calendar } from '../ui/calendar'
 import { RadioGroupItem, RadioGroup } from '../ui/radio-group'
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from '../ui/accordion'
-import { Checkbox } from '../ui/checkbox'
-import { coffeeBreak } from '@/utils/constants'
 
 const FormReservation: FC = () => {
 	const form = useForm<z.infer<typeof reservationSchema>>({
 		resolver: zodResolver(reservationSchema),
+		defaultValues: {
+			id: '1',
+			user_id: '1',
+			room_id: '1',
+			optional_message: '',
+			status_message: '',
+			review_id: '',
+			additional_foods: [
+				{ id: '1', additional_food_id: '1', price: 30000, reservation_id: '1' },
+			],
+			room_price: 60000,
+			total_price: 600000,
+		},
 	})
 
 	const onSubmit = (values: z.infer<typeof reservationSchema>) => {
@@ -108,7 +113,7 @@ const FormReservation: FC = () => {
 						</FormItem>
 					)}
 				/>
-				{/* <FormField
+				<FormField
 					control={form.control}
 					name='type'
 					render={({ field }) => (
@@ -150,42 +155,6 @@ const FormReservation: FC = () => {
 						</FormItem>
 					)}
 				/>
-				<FormField
-					control={form.control}
-					name='additional_foods'
-					render={({ field }) => (
-						<FormItem className='space-y-3'>
-							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Reservation type
-							</FormLabel>
-							<FormControl>
-								<Accordion type='single' collapsible>
-									<AccordionItem value='item-1'>
-										<AccordionTrigger>Coffee break</AccordionTrigger>
-										{coffeeBreak.map(item => (
-											<AccordionContent key={item.additional_food_id}>
-												<div className='flex gap-2'>
-													<Checkbox value={item.additional_food_id} />
-													<div className='flex flex-col'>
-														<p>
-															{item.name} {item.price}
-														</p>
-														<div className='flex gap-1'>
-															{item.details.map(detail => (
-																<p key={detail}>{detail}</p>
-															))}
-														</div>
-													</div>
-												</div>
-											</AccordionContent>
-										))}
-									</AccordionItem>
-								</Accordion>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/> */}
 				<div className='flex justify-end pt-4'>
 					<Button
 						type='submit'

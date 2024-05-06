@@ -18,16 +18,16 @@ export const subscriptionSchema = z.object({
 })
 
 const additionalFoodSchema = z.object({
-	id: z.string().uuid(),
-	additional_food_id: z.number().nullable(),
-	reservation_id: z.string().length(13),
+	id: z.string(),
+	additional_food_id: z.string(),
+	reservation_id: z.string(),
 	price: z.number().positive(),
 })
 
 export const reservationSchema = z.object({
-	// id: z.string(),
-	// user_id: z.string().uuid(),
-	// room_id: z.number(),
+	id: z.string(),
+	user_id: z.string(),
+	room_id: z.string(),
 	date: z.date(),
 	type: z.enum(['halfday', 'fullday', 'podcastStreaming', 'podcastRecording']),
 	room_price: z.number().positive(),
@@ -47,7 +47,7 @@ export const reservationSchema = z.object({
 			'declined',
 		])
 		.default('waitingForPayment'),
-	status_message: z.string().nullable(),
-	review_id: z.string().uuid().nullable(),
+	status_message: z.string().optional(),
+	review_id: z.string().optional(),
 	additional_foods: z.array(additionalFoodSchema).optional(),
 })

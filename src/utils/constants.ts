@@ -61,3 +61,29 @@ export const facilities = [
 	'Free Access Wifi',
 	'Integrate Digital Ecosystem Tiga Serangkai',
 ]
+
+export const coffeeBreak = [
+	{
+		id: 1,
+		reservation_id: 1,
+		additional_food_id: 1,
+		name: 'Coffee break one',
+		price: 30000,
+		details: ['1x Mineral', 'item 1', 'item 2'],
+	},
+	{
+		id: 1,
+		reservation_id: 1,
+		additional_food_id: 2,
+		name: 'Coffee break two',
+		price: 30000,
+		details: ['1x Mineral', 'item 1', 'item 2'],
+	},
+	{
+		id: 1,
+		reservation_id: 1,
+		additional_food_id: 3,
+		name: 'Custome',
+		details: ['Please contact admin'],
+	},
+]

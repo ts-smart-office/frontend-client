@@ -31,7 +31,10 @@ export const reservationSchema = z.object({
 	date: z.date(),
 	type: z.enum(['halfday', 'fullday', 'podcastStreaming', 'podcastRecording']),
 	room_price: z.number().positive(),
-	total_persons: z.number().positive(),
+	total_persons: z.preprocess(
+		a => parseInt(z.string().parse(a), 10),
+		z.number()
+	),
 	total_price: z.number().positive(),
 	optional_message: z.string().nullable(),
 	status: z

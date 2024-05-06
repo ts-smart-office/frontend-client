@@ -36,7 +36,7 @@ export const reservationSchema = z.object({
 		z.number()
 	),
 	total_price: z.number().positive(),
-	optional_message: z.string().nullable(),
+	optional_message: z.string(),
 	status: z
 		.enum([
 			'waitingForPayment',

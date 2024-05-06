@@ -24,6 +24,8 @@ import { cn } from '@/lib/utils'
 import { CalendarIcon } from '@heroicons/react/24/outline'
 import { Calendar } from '../ui/calendar'
 import { RadioGroupItem, RadioGroup } from '../ui/radio-group'
+import { Checkbox } from '../ui/checkbox'
+import { Textarea } from '../ui/textarea'
 
 const FormReservation: FC = () => {
 	const form = useForm<z.infer<typeof reservationSchema>>({
@@ -49,7 +51,10 @@ const FormReservation: FC = () => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-3'>
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className='flex flex-col gap-3'
+			>
 				<FormField
 					control={form.control}
 					name='date'
@@ -106,7 +111,7 @@ const FormReservation: FC = () => {
 									placeholder='Number of guests'
 									type='number'
 									{...field}
-									className='border rounded-full border-greyMuted focus-visible:ring-0 focus-visible:border-greenBrand text-base lg:text-lg lg:py-6 px-4'
+									className='border border-greyMuted text-base lg:text-lg lg:py-6 px-4 rounded-full'
 								/>
 							</FormControl>
 							<FormMessage />
@@ -155,10 +160,34 @@ const FormReservation: FC = () => {
 						</FormItem>
 					)}
 				/>
-				<div className='flex justify-end pt-4'>
+				<FormField
+					control={form.control}
+					name='optional_message'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className='text-base lg:text-lg text-greyMuted'>
+								Message (optional)
+							</FormLabel>
+							<FormControl>
+								<Textarea
+									placeholder='Any message?'
+									className='border border-greyMuted rounded-xl text-base lg:text-lg px-4 resize-none'
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<div className='mt-6 mb-5'>
+					<p className='font-semibold lg:text-2xl'>Total : Rp.0</p>
+				</div>
+
+				<div className='flex justify-end'>
 					<Button
 						type='submit'
-						className='bg-greenBrand rounded-full w-2/3 py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
+						className='bg-greenBrand rounded-full py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
 					>
 						Request reservation now
 					</Button>

@@ -1,4 +1,5 @@
 import Tagging from '@/components/layouts/Tagging'
+import FormReservation from '@/components/room-page/FormReservation'
 import LinkHome from '@/components/room-page/LinkHome'
 import RoomDetails from '@/components/room-page/RoomDetails'
 import RoomImages from '@/components/room-page/RoomImages'
@@ -17,7 +18,16 @@ const RoomPage: FC = () => {
 						<RoomImages />
 						<RoomDetails />
 					</div>
-					<div className='col-span-4'>Form</div>
+					<div className='col-span-4'>
+						<div className='w-full p-6 rounded-xl bg-white'>
+							<div className='flex flex-col gap-8'>
+								<h1 className='text-3xl font-semibold'>
+									Reservation Information
+								</h1>
+								<FormReservation />
+							</div>
+						</div>
+					</div>
 				</div>
 			</section>
 		</main>

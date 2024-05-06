@@ -12,6 +12,7 @@ export const listRooms = [
 		location: 'Laweyan, Surakarta',
 		price: [30, 60],
 		isPodcast: false,
+		urlDetails: '/room/meeting-room',
 	},
 	{
 		id: ~~(Math.random() * 100) + 1,
@@ -19,6 +20,7 @@ export const listRooms = [
 		location: 'Laweyan, Surakarta',
 		price: [30, 60],
 		isPodcast: false,
+		urlDetails: '/room/amphitheater',
 	},
 	{
 		id: ~~(Math.random() * 100) + 1,
@@ -26,6 +28,7 @@ export const listRooms = [
 		location: 'Laweyan, Surakarta',
 		price: [150, 200],
 		isPodcast: true,
+		urlDetails: '/room/podcast',
 	},
 ]
 

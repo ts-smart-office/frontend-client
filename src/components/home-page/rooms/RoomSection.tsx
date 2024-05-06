@@ -22,6 +22,7 @@ const RoomSection: FC = () => {
 						roomLocation={item.location}
 						roomPrice={item.price}
 						podcast={item.isPodcast}
+						urlDetails={item.urlDetails}
 					/>
 				))}
 			</div>

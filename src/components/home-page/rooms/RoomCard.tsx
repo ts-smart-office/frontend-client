@@ -2,6 +2,7 @@ import Tagging from '@/components/layouts/Tagging'
 import { Button } from '@/components/ui/button'
 import { MapPinIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+import Link from 'next/link'
 import { FC } from 'react'
 
 type TRoomCardProps = {
@@ -9,6 +10,7 @@ type TRoomCardProps = {
 	roomLocation: string
 	roomPrice: number[]
 	podcast?: boolean
+	urlDetails: string
 }
 
 const RoomCard: FC<TRoomCardProps> = ({
@@ -16,6 +18,7 @@ const RoomCard: FC<TRoomCardProps> = ({
 	roomName,
 	roomPrice,
 	podcast,
+	urlDetails,
 }) => {
 	return (
 		<div className='col-span-12 xl:col-span-4 p-3 rounded-xl bg-white'>
@@ -53,10 +56,11 @@ const RoomCard: FC<TRoomCardProps> = ({
 					</div>
 				</div>
 				<Button
+					asChild
 					className='bg-greenBrand font-urbanist h-14 rounded-full w-fit text-base hover:bg-opacity-80 hover:bg-greenBrand self-end'
 					size={'lg'}
 				>
-					Reserve room
+					<Link href={`${urlDetails}`}>Reserve room</Link>
 				</Button>
 			</div>
 		</div>

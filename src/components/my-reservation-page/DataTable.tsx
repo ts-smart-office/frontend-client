@@ -1,12 +1,4 @@
-'use client'
-
-import {
-	ColumnDef,
-	flexRender,
-	getCoreRowModel,
-	useReactTable,
-} from '@tanstack/react-table'
-
+import { FC } from 'react'
 import {
 	Table,
 	TableBody,
@@ -14,72 +6,47 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from '@/components/ui/table'
+} from '../ui/table'
+import { Badge } from '../ui/badge'
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 
-interface DataTableProps<TData, TValue> {
-	columns: ColumnDef<TData, TValue>[]
-	data: TData[]
-}
-
-export function DataTable<TData, TValue>({
-	columns,
-	data,
-}: DataTableProps<TData, TValue>) {
-	const table = useReactTable({
-		data,
-		columns,
-		getCoreRowModel: getCoreRowModel(),
-	})
-
+const DataTable: FC = () => {
 	return (
-		<div className='rounded-md border'>
-			<Table>
-				<TableHeader>
-					{table.getHeaderGroups().map(headerGroup => (
-						<TableRow key={headerGroup.id}>
-							{headerGroup.headers.map(header => {
-								return (
-									<TableHead key={header.id}>
-										{header.isPlaceholder
-											? null
-											: flexRender(
-													header.column.columnDef.header,
-													header.getContext()
-											  )}
-									</TableHead>
-								)
-							})}
-						</TableRow>
-					))}
-				</TableHeader>
-				<TableBody>
-					{table.getRowModel().rows?.length ? (
-						table.getRowModel().rows.map(row => (
-							<>
-								<TableRow
-									key={row.id}
-									data-state={row.getIsSelected() && 'selected'}
-								>
-									{row.getVisibleCells().map(cell => (
-										<TableCell key={cell.id}>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext()
-											)}
-										</TableCell>
-									))}
-								</TableRow>
-							</>
-						))
-					) : (
-						<TableRow>
-							<TableCell colSpan={columns.length} className='h-24 text-center'>
-								No results.
-							</TableCell>
-						</TableRow>
-					)}
-				</TableBody>
-			</Table>
-		</div>
+		<Table className='bg-white rounded-xl'>
+			<TableHeader>
+				<TableRow>
+					<TableHead>Room Name</TableHead>
+					<TableHead>Reservation Date</TableHead>
+					<TableHead className='hidden md:table-cell'>
+						Reservation Type
+					</TableHead>
+					<TableHead className='hidden md:table-cell'>
+						Reservation Time
+					</TableHead>
+					<TableHead className='hidden md:table-cell'>Total Price</TableHead>
+					<TableHead>Status</TableHead>
+					<TableHead>
+						<span className='sr-only'>Actions</span>
+					</TableHead>
+				</TableRow>
+			</TableHeader>
+			<TableBody>
+				<TableRow>
+					<TableCell className='font-medium'>Meeting Room</TableCell>
+					<TableCell>22 June 2024</TableCell>
+					<TableCell className='hidden md:table-cell'>Full Day</TableCell>
+					<TableCell className='hidden md:table-cell'>08.00 - 16.00</TableCell>
+					<TableCell className='hidden md:table-cell'>Rp. 600000</TableCell>
+					<TableCell>
+						<Badge variant='outline'>Waiting for payment</Badge>
+					</TableCell>
+					<TableCell>
+						<EllipsisVerticalIcon className='w-4 h-4' />
+					</TableCell>
+				</TableRow>
+			</TableBody>
+		</Table>
 	)
 }
+
+export default DataTable

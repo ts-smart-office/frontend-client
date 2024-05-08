@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 const PriceSummary: FC = () => {
 	return (
-		<div className='w-1/2 flex flex-col gap-11'>
+		<div className='w-full flex flex-col gap-11'>
 			<div className='flex flex-col gap-10'>
 				<div className='flex flex-col'>
 					<div className='flex justify-between'>

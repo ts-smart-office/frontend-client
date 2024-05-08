@@ -17,6 +17,10 @@ export const subscriptionSchema = z.object({
 	email: z.string().email(),
 })
 
+export const uploadPaymentFile = z.object({
+	paymentFile: z.custom<File | null>(val => val instanceof File, 'Required'),
+})
+
 const additionalFoodSchema = z.object({
 	id: z.string(),
 	additional_food_id: z.string(),

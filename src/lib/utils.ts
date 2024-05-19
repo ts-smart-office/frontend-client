@@ -1,6 +1,18 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+	return twMerge(clsx(inputs))
+}
+
+export function getCookie(name: string) {
+	const cookie = document.cookie
+		.split('; ')
+		.find(item => item.startsWith(`${name}=`))
+
+	if (!cookie) {
+		return null
+	}
+
+	return decodeURIComponent(cookie.split('=')[1])
 }

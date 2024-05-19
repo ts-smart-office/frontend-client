@@ -15,14 +15,26 @@ import { Input } from '@/components/ui/input'
 import { Button } from '../ui/button'
 import { signinSchema } from '@/utils/form-schema'
 import Link from 'next/link'
+import { fetchToken, loginUser, logoutUser } from '@/utils/api/authApi'
+import { handleUser } from '@/utils/actions'
 
 const FormSignin: FC = () => {
 	const form = useForm<z.infer<typeof signinSchema>>({
 		resolver: zodResolver(signinSchema),
+		defaultValues: {
+			email: '',
+			password: '',
+		},
 	})
 
-	const onSubmit = (values: z.infer<typeof signinSchema>) => {
-		console.log(values)
+	const onSubmit = async (values: z.infer<typeof signinSchema>) => {
+		fetchToken()
+		const res = await loginUser(values)
+		console.log(res)
+		if (res.status === 200) {
+			handleUser(res.data.user)
+		}
+		// await logoutUser()
 	}
 
 	return (

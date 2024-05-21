@@ -15,14 +15,37 @@ import { Input } from '@/components/ui/input'
 import { Button } from '../ui/button'
 import { signinSchema } from '@/utils/form-schema'
 import Link from 'next/link'
+import { apiCsrfToken, apiLogin, apiLogout } from '@/api/authApi'
+import { handleUser } from '@/lib/actions'
+import { useRouter } from 'next/navigation'
+import { useToast } from '@/components/ui/use-toast'
 
 const FormSignin: FC = () => {
+	const router = useRouter()
+	const { toast } = useToast()
 	const form = useForm<z.infer<typeof signinSchema>>({
 		resolver: zodResolver(signinSchema),
 	})
 
-	const onSubmit = (values: z.infer<typeof signinSchema>) => {
-		console.log(values)
+	const onSubmit = async (values: z.infer<typeof signinSchema>) => {
+		await apiCsrfToken()
+		await apiLogin(values)
+			.then(res => {
+				handleUser(res.data.user.email)
+				toast({
+					description: res.data.message,
+				})
+				setTimeout(function () {
+					router.push('/')
+				}, 1000)
+			})
+			.catch(error => {
+				if (error.response) {
+					toast({
+						description: error.response.data.message,
+					})
+				}
+			})
 	}
 
 	return (

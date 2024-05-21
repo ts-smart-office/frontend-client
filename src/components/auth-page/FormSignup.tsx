@@ -15,14 +15,38 @@ import { Input } from '@/components/ui/input'
 import { Button } from '../ui/button'
 import { signupSchema } from '@/utils/form-schema'
 import Link from 'next/link'
+import { apiCsrfToken, apiRegister } from '@/api/authApi'
+import { useToast } from '../ui/use-toast'
+import { useRouter } from 'next/navigation'
+import { handleUser } from '@/lib/actions'
 
 const FormSignup: FC = () => {
 	const form = useForm<z.infer<typeof signupSchema>>({
 		resolver: zodResolver(signupSchema),
 	})
 
-	const onSubmit = (values: z.infer<typeof signupSchema>) => {
-		console.log(values)
+	const router = useRouter()
+	const { toast } = useToast()
+
+	const onSubmit = async (values: z.infer<typeof signupSchema>) => {
+		await apiCsrfToken()
+		await apiRegister(values)
+			.then(res => {
+				handleUser(res.data.user.email)
+				toast({
+					description: res.data.message,
+				})
+				setTimeout(function () {
+					router.push('/')
+				}, 1000)
+			})
+			.catch(error => {
+				if (error.response) {
+					toast({
+						description: error.response.data.message,
+					})
+				}
+			})
 	}
 
 	return (
@@ -30,7 +54,7 @@ const FormSignup: FC = () => {
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-3'>
 				<FormField
 					control={form.control}
-					name='fullname'
+					name='name'
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className='text-base lg:text-lg'>Full name</FormLabel>
@@ -103,6 +127,24 @@ const FormSignup: FC = () => {
 				<FormField
 					control={form.control}
 					name='password'
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel className='text-base lg:text-lg'>Password</FormLabel>
+							<FormControl>
+								<Input
+									placeholder='Fill your password'
+									type='password'
+									{...field}
+									className='border-2 rounded-full border-darkColor focus-visible:ring-0 focus-visible:border-greenBrand text-base lg:text-lg lg:py-6 px-4'
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name='password_confirmation'
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className='text-base lg:text-lg'>Password</FormLabel>

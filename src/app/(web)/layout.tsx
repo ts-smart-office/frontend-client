@@ -3,6 +3,7 @@ import '../globals.css'
 import { fontQuestrial, fontUrbanist } from '@/utils/font'
 import Navbar from '@/components/layouts/navbar/Navbar'
 import Footer from '@/components/layouts/Footer'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -24,6 +25,7 @@ export default function RootLayout({
 				<footer className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center'>
 					<Footer />
 				</footer>
+				<Toaster />
 			</body>
 		</html>
 	)

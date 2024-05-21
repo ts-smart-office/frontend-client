@@ -1,9 +1,13 @@
 import { Button } from '@/components/ui/button'
+import { getUser } from '@/lib/actions'
 import { navMenu } from '@/utils/constants'
 import Link from 'next/link'
 import { FC } from 'react'
+import DropdownUser from './DropdownUser'
 
-const DesktopNav: FC = () => {
+const DesktopNav: FC = async () => {
+	const userSession = await getUser()
+
 	return (
 		<div className='hidden 2xl:max-w-[1600px] 2xl:mx-auto py-8 px-20 lg:block animate-in fade-in zoom-in'>
 			<div className='flex justify-between items-center'>
@@ -26,14 +30,18 @@ const DesktopNav: FC = () => {
 						</Link>
 					))}
 				</div>
-				<Button
-					asChild
-					variant={'outline'}
-					className='border-dark rounded-full hover:bg-greenBrand hover:border-greenBrand font-semibold hover:text-[#f9f9f9] transition-all duration-300 text-base h-14'
-					size={'lg'}
-				>
-					<Link href={'/auth/signin'}>Sign In / Sign Up</Link>
-				</Button>
+				{userSession ? (
+					<DropdownUser userSession={userSession} />
+				) : (
+					<Button
+						asChild
+						variant={'outline'}
+						className='border-dark rounded-full hover:bg-greenBrand hover:border-greenBrand font-semibold hover:text-[#f9f9f9] transition-all duration-300 text-base h-14'
+						size={'lg'}
+					>
+						<Link href={'/signin'}>Sign In / Sign Up</Link>
+					</Button>
+				)}
 			</div>
 		</div>
 	)

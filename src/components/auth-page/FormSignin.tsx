@@ -31,7 +31,8 @@ const FormSignin: FC = () => {
 		await apiCsrfToken()
 		await apiLogin(values)
 			.then(res => {
-				handleUser(res.data.user.email)
+				const { id, name, email } = res.data.user
+				handleUser({ id, name, email })
 				toast({
 					description: res.data.message,
 				})

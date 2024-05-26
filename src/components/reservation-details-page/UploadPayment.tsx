@@ -4,27 +4,52 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '../ui/form'
-import { Input } from '../ui/input'
+import { Form } from '../ui/form'
 import { Button } from '../ui/button'
+import CustomUpload from './CustomUpload'
+import { apiUploadPayment } from '@/api/reservationApi'
+import { useToast } from '../ui/use-toast'
+import { useParams, useRouter } from 'next/navigation'
 
-const UploadPayment: FC = () => {
+type TUploadPaymentProps = {
+	urlImage: string | null
+}
+
+const UploadPayment: FC<TUploadPaymentProps> = ({ urlImage }) => {
+	const { toast } = useToast()
+	const router = useRouter()
+	const params = useParams()
 	const form = useForm<z.infer<typeof uploadPaymentFile>>({
 		resolver: zodResolver(uploadPaymentFile),
 		defaultValues: {
-			paymentFile: null,
+			attachment: null,
 		},
 	})
 
-	const onSubmit = (values: z.infer<typeof uploadPaymentFile>) => {
-		console.log(values)
+	const onSubmit = async (values: z.infer<typeof uploadPaymentFile>) => {
+		const { attachment } = values
+
+		const formData = new FormData()
+		formData.append('_method', 'PUT')
+		formData.append('attachment', attachment)
+		if (typeof values.attachment === 'object') {
+			await apiUploadPayment(params.id.toString(), formData)
+				.then(res => {
+					toast({
+						description: res.data.message,
+					})
+					setTimeout(function () {
+						router.push('/myreservation')
+					}, 1000)
+				})
+				.catch(error => {
+					if (error.response) {
+						toast({
+							description: error.response.data.message,
+						})
+					}
+				})
+		}
 	}
 
 	return (
@@ -34,31 +59,7 @@ const UploadPayment: FC = () => {
 					onSubmit={form.handleSubmit(onSubmit)}
 					className='flex flex-col gap-4'
 				>
-					<FormField
-						control={form.control}
-						name='paymentFile'
-						render={({ field: { onChange }, ...field }) => (
-							<FormItem>
-								<FormLabel className='font-semibold text-2xl'>
-									Upload payment
-								</FormLabel>
-								<FormControl>
-									<Input
-										size={100}
-										type='file'
-										placeholder='Upload your payment here'
-										onChange={e => {
-											if (!e.target.value) return
-											onChange(e.target.files?.[0])
-										}}
-										className='w-full rounded-full'
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<CustomUpload form={form} name='attachment' urlImage={urlImage} />
 					<div className='flex gap-6'>
 						<Button
 							type='submit'
@@ -69,6 +70,7 @@ const UploadPayment: FC = () => {
 						</Button>
 						<Button
 							type='submit'
+							disabled={!!urlImage}
 							className='w-full bg-greenBrand rounded-full hover:bg-opacity-80 py-6 sm:text-lg hover:bg-greenBrand'
 						>
 							Make reservation

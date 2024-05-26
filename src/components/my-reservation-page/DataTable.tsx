@@ -1,4 +1,5 @@
-import { FC } from 'react'
+'use client'
+import { FC, useEffect, useState } from 'react'
 import {
 	Table,
 	TableBody,
@@ -9,8 +10,28 @@ import {
 } from '../ui/table'
 import { Badge } from '../ui/badge'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
+import { apiReservations } from '@/api/reservationApi'
 
 const DataTable: FC = () => {
+	const [reservation, setReservation] = useState<any[]>([])
+	const getReservations = async () => {
+		await apiReservations()
+			.then(res => {
+				setReservation(res.data.data)
+			})
+			.catch(error => {
+				if (error.response) {
+					console.log(error.response)
+				}
+			})
+	}
+
+	useEffect(() => {
+		getReservations()
+	}, [])
+
+	console.log(reservation)
+
 	return (
 		<Table className='bg-white rounded-xl'>
 			<TableHeader>

@@ -32,7 +32,8 @@ const FormSignup: FC = () => {
 		await apiCsrfToken()
 		await apiRegister(values)
 			.then(res => {
-				handleUser(res.data.user.email)
+				const { id, name, email } = res.data.user
+				handleUser({ id, name, email })
 				toast({
 					description: res.data.message,
 				})
@@ -147,7 +148,9 @@ const FormSignup: FC = () => {
 					name='password_confirmation'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className='text-base lg:text-lg'>Password</FormLabel>
+							<FormLabel className='text-base lg:text-lg'>
+								Confirm Password
+							</FormLabel>
 							<FormControl>
 								<Input
 									placeholder='Fill your password'

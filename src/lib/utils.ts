@@ -16,3 +16,9 @@ export function getCookie(name: string) {
 
 	return decodeURIComponent(cookie.split('=')[1])
 }
+
+export const rupiahCurrency = new Intl.NumberFormat('id-ID', {
+	style: 'currency',
+	currency: 'IDR',
+	minimumFractionDigits: 0,
+})

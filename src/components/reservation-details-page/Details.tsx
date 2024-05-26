@@ -1,3 +1,4 @@
+import { IDetailsReservation } from '@/utils/types'
 import {
 	CalendarIcon,
 	DocumentTextIcon,
@@ -6,7 +7,15 @@ import {
 import Image from 'next/image'
 import { FC } from 'react'
 
-const Details: FC = () => {
+type TDetailsProps = {
+	details: IDetailsReservation | null
+}
+
+const Details: FC<TDetailsProps> = ({ details }) => {
+	if (!details) {
+		return null
+	}
+
 	return (
 		<div className='w-full xl:w-1/2 bg-white rounded-lg'>
 			<div className='flex flex-col'>
@@ -27,7 +36,7 @@ const Details: FC = () => {
 								<p className='text-base lg:text-xl'>Reservation date</p>
 							</div>
 							<p className='text-base lg:text-xl text-greyMuted'>
-								12 June 2024
+								{details.date}
 							</p>
 						</div>
 						<div className='w-full flex justify-between items-center'>
@@ -35,8 +44,8 @@ const Details: FC = () => {
 								<DocumentTextIcon className='w-8 h-8 stroke-1' />
 								<p className='text-base lg:text-xl'>Reservation type</p>
 							</div>
-							<p className='text-base lg:text-xl text-greyMuted'>
-								Half-Day (08.00 AM - 12.00 PM)
+							<p className='capitalize text-base lg:text-xl text-greyMuted'>
+								{details.type}
 							</p>
 						</div>
 						<div className='w-full flex justify-between items-center'>
@@ -44,7 +53,9 @@ const Details: FC = () => {
 								<UserIcon className='w-8 h-8 stroke-1' />
 								<p className='text-base lg:text-xl'>Total persons</p>
 							</div>
-							<p className='text-base lg:text-xl text-greyMuted'>20 Persons</p>
+							<p className='text-base lg:text-xl text-greyMuted'>
+								{details.total_persons} Persons
+							</p>
 						</div>
 					</div>
 				</div>

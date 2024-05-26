@@ -13,9 +13,10 @@ import Link from 'next/link'
 import { apiLogout } from '@/api/authApi'
 import { deleteUser } from '@/lib/actions'
 import { useToast } from '@/components/ui/use-toast'
+import { UserSession } from '@/utils/types'
 
 type TDropdownUserProps = {
-	userSession: string
+	userSession: UserSession
 }
 
 const DropdownUser: FC<TDropdownUserProps> = ({ userSession }) => {
@@ -37,7 +38,7 @@ const DropdownUser: FC<TDropdownUserProps> = ({ userSession }) => {
 					size='icon'
 					className='overflow-hidden rounded-full w-fit px-4'
 				>
-					{userSession}
+					{userSession.email}
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end'>

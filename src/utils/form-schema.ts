@@ -24,40 +24,15 @@ export const subscriptionSchema = z.object({
 })
 
 export const uploadPaymentFile = z.object({
-	paymentFile: z.custom<File | null>(val => val instanceof File, 'Required'),
-})
-
-const additionalFoodSchema = z.object({
-	id: z.string(),
-	additional_food_id: z.string(),
-	reservation_id: z.string(),
-	price: z.number().positive(),
+	attachment: z.any(),
 })
 
 export const reservationSchema = z.object({
-	id: z.string(),
-	user_id: z.string(),
-	room_id: z.string(),
-	date: z.date(),
-	type: z.enum(['halfday', 'fullday', 'podcastStreaming', 'podcastRecording']),
-	room_price: z.number().positive(),
-	total_persons: z.preprocess(
-		a => parseInt(z.string().parse(a), 10),
-		z.number()
-	),
-	total_price: z.number().positive(),
-	optional_message: z.string(),
-	status: z
-		.enum([
-			'waitingForPayment',
-			'paid',
-			'approved',
-			'expired',
-			'canceledByUser',
-			'declined',
-		])
-		.default('waitingForPayment'),
-	status_message: z.string().optional(),
-	review_id: z.string().optional(),
-	additional_foods: z.array(additionalFoodSchema).optional(),
+	room_id: z.number(),
+	date: z.coerce.date(),
+	type: z.enum(['halfday', 'fullday']),
+	total_persons: z.string().refine(val => !Number.isNaN(parseInt(val, 10))),
+	optional_message: z.string().optional(),
+	snack: z.coerce.number().optional(),
+	lunch: z.coerce.number().optional(),
 })

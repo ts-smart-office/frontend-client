@@ -19,7 +19,7 @@ const AboutUs: FC = () => {
 			<div className='w-full grid grid-cols-12 gap-4 lg:gap-8'>
 				<div className='col-span-12 lg:col-span-5 flex flex-col gap-2'>
 					<Tagging label='100+' text='Successfully Reservation' />
-					<div className='relative w-full h-[460px] rounded-2xl'>
+					<div className='relative w-full h-72 md:h-[460px] rounded-2xl'>
 						<Image
 							src='/banner-2.jpg'
 							alt='banner-1'
@@ -30,7 +30,7 @@ const AboutUs: FC = () => {
 				</div>
 				<div className='col-span-12 lg:col-span-7 flex flex-col gap-2'>
 					<Tagging label='5.00' text='Customer Satisfaction Rate' />
-					<div className='relative w-full h-[460px] rounded-2xl'>
+					<div className='relative w-full h-72 md:h-[460px] rounded-2xl'>
 						<Image
 							src='/banner-2.jpg'
 							alt='banner-1'

@@ -1,8 +1,26 @@
-import { FC } from 'react'
+'use client'
+import { FC, useEffect, useState } from 'react'
 import RoomCard from './RoomCard'
 import { listRooms } from '@/utils/constants'
+import { apiRooms } from '@/api/roomApi'
 
 const RoomSection: FC = () => {
+	const [rooms, setRooms] = useState<any[]>([])
+
+	const fetchRooms = async () => {
+		await apiRooms()
+			.then(res => setRooms(res.data.data))
+			.catch(error => {
+				if (error.response) {
+					console.log(error.response)
+				}
+			})
+	}
+
+	useEffect(() => {
+		fetchRooms()
+	}, [])
+
 	return (
 		<div className='w-full 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center items-center font-urbanist gap-10 py-12 lg:py-32 lg:px-20'>
 			<div className='flex flex-col justify-center items-center gap-4 max-md:px-4'>
@@ -15,14 +33,13 @@ const RoomSection: FC = () => {
 				</p>
 			</div>
 			<div className='w-full grid grid-cols-12 gap-4 lg:gap-8 max-md:px-4'>
-				{listRooms.map((item, idx) => (
+				{rooms.map((item, idx) => (
 					<RoomCard
 						key={idx}
 						roomName={item.name}
-						roomLocation={item.location}
-						roomPrice={item.price}
+						roomPrice={item.prices}
 						podcast={item.isPodcast}
-						urlDetails={item.urlDetails}
+						urlDetails={item.id}
 					/>
 				))}
 			</div>

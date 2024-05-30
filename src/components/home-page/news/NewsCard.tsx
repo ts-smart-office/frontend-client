@@ -9,7 +9,7 @@ type TNewsCardProps = {
 const NewsCard: FC<TNewsCardProps> = ({ newsType, newsTitle }) => {
 	return (
 		<div className='col-span-6 xl:col-span-3 rounded-lg shadow-sm'>
-			<div className='relative h-40 rounded-lg'>
+			<div className='relative h-32 md:h-40 rounded-lg'>
 				<Image
 					src='/banner-2.jpg'
 					alt='banner-1'
@@ -21,7 +21,7 @@ const NewsCard: FC<TNewsCardProps> = ({ newsType, newsTitle }) => {
 				<p className='text-base underline underline-offset-4 decoration-greenBrand'>
 					{newsType}
 				</p>
-				<h1 className='text-lg font-semibold'>{newsTitle}</h1>
+				<h1 className='text-lg font-semibold line-clamp-2'>{newsTitle}</h1>
 			</div>
 		</div>
 	)

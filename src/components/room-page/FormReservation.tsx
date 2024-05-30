@@ -37,23 +37,37 @@ import {
 	apiReservations,
 } from '@/api/reservationApi'
 import { useToast } from '../ui/use-toast'
-import { BodyReservation, LunchCategory, SnackCategory } from '@/utils/types'
+import {
+	BodyReservation,
+	IRoomDetails,
+	LunchCategory,
+	SnackCategory,
+} from '@/utils/types'
 import { useRouter } from 'next/navigation'
+import moment from 'moment'
 
-const FormReservation: FC = () => {
+type TFormReservationProps = {
+	reservedDates: string[]
+	details: IRoomDetails
+}
+
+const FormReservation: FC<TFormReservationProps> = ({
+	details,
+	reservedDates,
+}) => {
 	const { toast } = useToast()
 	const router = useRouter()
 	const form = useForm<z.infer<typeof reservationSchema>>({
 		resolver: zodResolver(reservationSchema),
 		defaultValues: {
-			room_id: 1,
+			room_id: details.id,
 		},
 	})
 
 	const onSubmit = async (values: z.infer<typeof reservationSchema>) => {
 		const bodyReservation: BodyReservation = {
-			room_id: values.room_id,
-			date: new Date(values.date).toISOString().split('T')[0],
+			room_id: details.id,
+			date: moment(values.date).format('YYYY-MM-DD'),
 			type: values.type,
 			total_persons: parseInt(values.total_persons),
 			optional_message: values.optional_message,
@@ -89,7 +103,6 @@ const FormReservation: FC = () => {
 
 	const [snack, setSnack] = useState<SnackCategory[]>([])
 	const [lunch, setLunch] = useState<LunchCategory[]>([])
-	const [reservations, setReservations] = useState<any[]>([])
 
 	const allFoods = async () => {
 		await apiFoods()
@@ -104,24 +117,9 @@ const FormReservation: FC = () => {
 			})
 	}
 
-	const allReservations = async () => {
-		await apiReservations()
-			.then(res => {
-				setReservations(res.data.data)
-			})
-			.catch(error => {
-				if (error.response) {
-					console.log(error.response)
-				}
-			})
-	}
-
 	useEffect(() => {
 		allFoods()
-		allReservations()
 	}, [])
-
-	const reservedDates = reservations.map(reservation => reservation.date)
 
 	return (
 		<Form {...form}>
@@ -213,22 +211,36 @@ const FormReservation: FC = () => {
 								>
 									<FormItem className='flex items-center space-x-3'>
 										<FormControl>
-											<RadioGroupItem value='halfday' />
+											<RadioGroupItem value={details.prices[0].type} />
 										</FormControl>
 										<FormLabel className='font-normal text-base lg:text-lg'>
 											<p className='font-semibold'>
-												Half-Day (Rp.25.000/person)
+												{details.prices[0].type === 'podcastRecording'
+													? 'Recording'
+													: details.prices[0].type}{' '}
+												({rupiahCurrency.format(details.prices[0].price)}/
+												{details.prices[0].type === 'podcastRecording'
+													? 'Hour'
+													: 'Person'}
+												)
 											</p>
 											<p>Start at 08.00 AM - 12.00 PM</p>
 										</FormLabel>
 									</FormItem>
 									<FormItem className='flex items-center space-x-3'>
 										<FormControl className=''>
-											<RadioGroupItem value='fullday' />
+											<RadioGroupItem value={details.prices[1].type} />
 										</FormControl>
 										<FormLabel className='font-normal text-base lg:text-lg flex flex-col'>
 											<p className='font-semibold'>
-												Full-Day (Rp.60.000/person)
+												{details.prices[1].type === 'podcastStreaming'
+													? 'Streaming'
+													: details.prices[1].type}{' '}
+												({rupiahCurrency.format(details.prices[1].price)}/
+												{details.prices[1].type === 'podcastStreaming'
+													? 'Hour'
+													: 'Person'}
+												)
 											</p>
 											<p>Start at 08.00 AM - 16.00 PM</p>
 										</FormLabel>
@@ -358,11 +370,7 @@ const FormReservation: FC = () => {
 					)}
 				/>
 
-				{/* <div className='mt-6 mb-5'>
-					<p className='font-semibold lg:text-2xl'>Total : Rp.0</p>
-				</div> */}
-
-				<div className='flex justify-end'>
+				<div className='flex justify-end mt-4 md:mt-6'>
 					<Button
 						type='submit'
 						className='bg-greenBrand rounded-full py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'

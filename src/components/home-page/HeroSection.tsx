@@ -28,7 +28,7 @@ const HeroSection: FC = () => {
 				<Tagging label='New' text='Modern buildings' />
 				<div className='w-full grid grid-cols-12 gap-3 lg:gap-6'>
 					<div className='col-span-5 xl:col-span-3'>
-						<div className='relative w-full h-[360px] rounded-2xl'>
+						<div className='relative w-full h-40 md:h-[360px] rounded-2xl'>
 							<Image
 								src='/banner-2.jpg'
 								alt='banner-1'
@@ -38,7 +38,7 @@ const HeroSection: FC = () => {
 						</div>
 					</div>
 					<div className='xl:col-span-4 col-span-7'>
-						<div className='relative w-full h-[360px] rounded-2xl'>
+						<div className='relative w-full h-40 md:h-[360px] rounded-2xl'>
 							<Image
 								src='/banner-3.jpg'
 								alt='banner-1'
@@ -48,7 +48,7 @@ const HeroSection: FC = () => {
 						</div>
 					</div>
 					<div className='xl:col-span-5 col-span-12'>
-						<div className='relative w-full h-[360px] rounded-2xl'>
+						<div className='relative w-full h-60 md:h-[360px] rounded-2xl'>
 							<Image
 								src='/banner-1.jpg'
 								alt='banner-1'

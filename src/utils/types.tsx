@@ -88,3 +88,26 @@ export interface IDetailsReservation {
 	room: Room
 	foods: Food[]
 }
+
+interface IFacilities {
+	id: number
+	name: string
+}
+
+interface IRoomPrice {
+	id: number
+	type: string
+	price: number
+}
+
+export interface IRoomDetails {
+	id: number
+	name: string
+	max_capacity: number
+	description: string
+	reservation_lead_time: number
+	facilities: IFacilities[]
+	prices: IRoomPrice[]
+	image_urls: string[]
+	reserved_dates: string[]
+}

@@ -28,7 +28,7 @@ const FormSubscription: FC = () => {
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className='w-full max-w-4xl flex justify-center gap-2 lg:gap-8 max-md:px-4'
+				className='w-full max-w-4xl flex flex-col md:flex-row justify-center gap-2 lg:gap-8 max-md:px-4'
 			>
 				<FormField
 					control={form.control}
@@ -48,7 +48,7 @@ const FormSubscription: FC = () => {
 				/>
 				<Button
 					type='submit'
-					className='bg-greenBrand rounded-full w-fit px-8 lg:py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
+					className='bg-greenBrand self-center rounded-full w-fit px-8 lg:py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
 				>
 					Subscribe now
 				</Button>

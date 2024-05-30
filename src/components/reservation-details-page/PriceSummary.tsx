@@ -22,12 +22,13 @@ const PriceSummary: FC<TPriceSummaryProps> = ({ details }) => {
 		details.room_price * details.total_persons
 	)
 	const foodTotal = rupiahCurrency.format(
-		(lunchFoods ? lunchFoods.price : 0) + (snackFoods ? snackFoods.price : 0)
+		(lunchFoods ? lunchFoods.price * details.total_persons : 0) +
+			(snackFoods ? snackFoods.price * details.total_persons : 0)
 	)
 	const totalPayment = rupiahCurrency.format(
 		details.room_price * details.total_persons +
-			(lunchFoods ? lunchFoods.price : 0) +
-			(snackFoods ? snackFoods.price : 0)
+			(lunchFoods ? lunchFoods.price * details.total_persons : 0) +
+			(snackFoods ? snackFoods.price * details.total_persons : 0)
 	)
 
 	return (

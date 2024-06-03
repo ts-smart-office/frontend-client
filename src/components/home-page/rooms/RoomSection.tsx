@@ -1,7 +1,6 @@
 'use client'
 import { FC, useEffect, useState } from 'react'
 import RoomCard from './RoomCard'
-import { listRooms } from '@/utils/constants'
 import { apiRooms } from '@/api/roomApi'
 
 const RoomSection: FC = () => {
@@ -36,9 +35,9 @@ const RoomSection: FC = () => {
 				{rooms.map((item, idx) => (
 					<RoomCard
 						key={idx}
+						roomBanner={item.image_urls[0]}
 						roomName={item.name}
 						roomPrice={item.prices}
-						podcast={item.isPodcast}
 						urlDetails={item.id}
 					/>
 				))}

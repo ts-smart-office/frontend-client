@@ -31,11 +31,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '../ui/accordion'
-import {
-	apiCreateReservation,
-	apiFoods,
-	apiReservations,
-} from '@/api/reservationApi'
+import { apiCreateReservation, apiFoods } from '@/api/reservationApi'
 import { useToast } from '../ui/use-toast'
 import {
 	BodyReservation,
@@ -214,7 +210,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 											<RadioGroupItem value={details.prices[0].type} />
 										</FormControl>
 										<FormLabel className='font-normal text-base lg:text-lg'>
-											<p className='font-semibold'>
+											<p className='font-semibold mb-2'>
 												{details.prices[0].type === 'podcastRecording'
 													? 'Recording'
 													: details.prices[0].type}{' '}
@@ -224,15 +220,17 @@ const FormReservation: FC<TFormReservationProps> = ({
 													: 'Person'}
 												)
 											</p>
-											<p>Start at 08.00 AM - 12.00 PM</p>
+											{details.prices[0].type === 'halfday' && (
+												<p>Start at 08.00 AM - 12.00 PM</p>
+											)}
 										</FormLabel>
 									</FormItem>
 									<FormItem className='flex items-center space-x-3'>
-										<FormControl className=''>
+										<FormControl>
 											<RadioGroupItem value={details.prices[1].type} />
 										</FormControl>
 										<FormLabel className='font-normal text-base lg:text-lg flex flex-col'>
-											<p className='font-semibold'>
+											<p className='font-semibold mb-2'>
 												{details.prices[1].type === 'podcastStreaming'
 													? 'Streaming'
 													: details.prices[1].type}{' '}
@@ -242,7 +240,9 @@ const FormReservation: FC<TFormReservationProps> = ({
 													: 'Person'}
 												)
 											</p>
-											<p>Start at 08.00 AM - 16.00 PM</p>
+											{details.prices[1].type === 'fullday' && (
+												<p>Start at 08.00 AM - 16.00 PM</p>
+											)}
 										</FormLabel>
 									</FormItem>
 								</RadioGroup>
@@ -264,13 +264,23 @@ const FormReservation: FC<TFormReservationProps> = ({
 								<FormControl>
 									<Accordion type='single' collapsible>
 										<AccordionItem value='item-1'>
-											<AccordionTrigger className='py-2 text-base lg:text-lg'>
-												Snack
+											<AccordionTrigger className='py-2 text-base lg:text-lg hover:no-underline'>
+												<div className='flex w-full justify-between items-center'>
+													Snack
+													<Button
+														type='button'
+														variant='ghost'
+														onClick={() => form.reset()}
+													>
+														Reset
+													</Button>
+												</div>
 											</AccordionTrigger>
-											<AccordionContent>
+											<AccordionContent className='flex flex-col gap-2'>
 												<RadioGroup
 													onValueChange={field.onChange}
 													className='flex flex-col space-y-1'
+													value={field.value?.toString()}
 												>
 													{snack?.map(item => (
 														<FormItem
@@ -310,13 +320,23 @@ const FormReservation: FC<TFormReservationProps> = ({
 								<FormControl>
 									<Accordion type='single' collapsible>
 										<AccordionItem value='item-1'>
-											<AccordionTrigger className='py-2 text-base lg:text-lg'>
-												Lunch
+											<AccordionTrigger className='py-2 text-base lg:text-lg hover:no-underline'>
+												<div className='flex w-full justify-between items-center'>
+													Lunch
+													<Button
+														type='button'
+														variant='ghost'
+														onClick={() => form.reset()}
+													>
+														Reset
+													</Button>
+												</div>
 											</AccordionTrigger>
 											<AccordionContent>
 												<RadioGroup
 													onValueChange={field.onChange}
 													className='flex flex-col space-y-1'
+													value={field.value?.toString()}
 												>
 													{lunch?.map(item => (
 														<FormItem

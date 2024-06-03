@@ -15,7 +15,7 @@ const MyReservationPage = async () => {
 				<LinkHome />
 				<h1 className='font-semibold text-5xl'>My reservation</h1>
 				<div className='py-10'>
-					<DataTable />
+					<DataTable userId={userSession.id} />
 				</div>
 			</section>
 		</main>

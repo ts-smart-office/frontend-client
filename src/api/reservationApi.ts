@@ -26,6 +26,14 @@ export const apiReservations = () => {
 	})
 }
 
+export const apiReservationsUser = (id: string) => {
+	return axiosInstance.get(`/api/reservations?user=${id}`, {
+		headers: {
+			accept: 'application/json',
+		},
+	})
+}
+
 export const apiDetailsReservation = (id: string) => {
 	return axiosInstance.get(`/api/reservations/${id}`, {
 		headers: {

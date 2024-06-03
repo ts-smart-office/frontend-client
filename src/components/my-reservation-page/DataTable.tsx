@@ -10,14 +10,23 @@ import {
 } from '../ui/table'
 import { Badge } from '../ui/badge'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
-import { apiReservations } from '@/api/reservationApi'
+import { apiReservationsUser } from '@/api/reservationApi'
+import { IReservationsByUser } from '@/utils/types'
+import Spinner from '../ui/spinner'
 
-const DataTable: FC = () => {
-	const [reservation, setReservation] = useState<any[]>([])
+type TDataTableProps = {
+	userId: string
+}
+
+const DataTable: FC<TDataTableProps> = ({ userId }) => {
+	const [reservation, setReservation] = useState<IReservationsByUser[]>([])
+	const [isLoading, setIsLoading] = useState<boolean>(true)
+
 	const getReservations = async () => {
-		await apiReservations()
+		await apiReservationsUser(userId)
 			.then(res => {
 				setReservation(res.data.data)
+				setIsLoading(false)
 			})
 			.catch(error => {
 				if (error.response) {
@@ -32,15 +41,35 @@ const DataTable: FC = () => {
 
 	console.log(reservation)
 
+	if (isLoading) {
+		return (
+			<main className='w-full font-urbanist'>
+				<section className='h-full px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center items-center'>
+					<Spinner />
+				</section>
+			</main>
+		)
+	}
+
+	if (reservation.length <= 0) {
+		return (
+			<main className='w-full font-urbanist h-[50vh]'>
+				<section className='h-full px-4 lg:px-0 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col'>
+					Reservation empty
+				</section>
+			</main>
+		)
+	}
+
 	return (
 		<Table className='bg-white rounded-xl'>
 			<TableHeader>
 				<TableRow>
 					<TableHead>Room Name</TableHead>
-					<TableHead>Reservation Date</TableHead>
 					<TableHead className='hidden md:table-cell'>
 						Reservation Type
 					</TableHead>
+					<TableHead>Reservation Date</TableHead>
 					<TableHead className='hidden md:table-cell'>
 						Reservation Time
 					</TableHead>
@@ -52,19 +81,31 @@ const DataTable: FC = () => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				<TableRow>
-					<TableCell className='font-medium'>Meeting Room</TableCell>
-					<TableCell>22 June 2024</TableCell>
-					<TableCell className='hidden md:table-cell'>Full Day</TableCell>
-					<TableCell className='hidden md:table-cell'>08.00 - 16.00</TableCell>
-					<TableCell className='hidden md:table-cell'>Rp. 600000</TableCell>
-					<TableCell>
-						<Badge variant='outline'>Waiting for payment</Badge>
-					</TableCell>
-					<TableCell>
-						<EllipsisVerticalIcon className='w-4 h-4' />
-					</TableCell>
-				</TableRow>
+				{reservation.map(item => (
+					<TableRow>
+						<TableCell className='font-medium'>{item.room.name}</TableCell>
+						<TableCell className='hidden md:table-cell'>{item.type}</TableCell>
+						<TableCell>{item.date}</TableCell>
+						<TableCell className='hidden md:table-cell'>
+							{item.type === 'fullday' ? '08.00 - 16.00' : '08.00 - 12.00'}
+						</TableCell>
+						<TableCell className='hidden md:table-cell'>
+							{item.total_price}
+						</TableCell>
+						<TableCell>
+							{item.status === 'completed' ? (
+								<Badge variant='default' className='bg-greenBrand'>
+									{item.status}
+								</Badge>
+							) : (
+								<Badge variant='outline'>{item.status}</Badge>
+							)}
+						</TableCell>
+						<TableCell>
+							<EllipsisVerticalIcon className='w-4 h-4' />
+						</TableCell>
+					</TableRow>
+				))}
 			</TableBody>
 		</Table>
 	)

@@ -9,14 +9,14 @@ import { FC } from 'react'
 type TRoomCardProps = {
 	roomName: string
 	roomPrice: any[]
-	podcast?: boolean
 	urlDetails: string
+	roomBanner: string
 }
 
 const RoomCard: FC<TRoomCardProps> = ({
 	roomName,
 	roomPrice,
-	podcast,
+	roomBanner,
 	urlDetails,
 }) => {
 	return (
@@ -26,8 +26,8 @@ const RoomCard: FC<TRoomCardProps> = ({
 					<Tagging label='5.0' text='Rating' />
 				</div>
 				<Image
-					src='/banner-2.jpg'
-					alt='banner-1'
+					src={roomBanner}
+					alt={roomName}
 					fill
 					className='absolute w-full h-full object-cover rounded-lg'
 				/>

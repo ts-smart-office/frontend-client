@@ -111,3 +111,29 @@ export interface IRoomDetails {
 	image_urls: string[]
 	reserved_dates: string[]
 }
+
+export interface IReservationsByUser {
+	created_at: string
+	date: string
+	duration_in_hours: number | null
+	id: string
+	optional_message: string | null
+	proof_of_payment_url: string
+	room: {
+		created_at: string
+		deleted_at: string | null
+		description: string
+		id: number
+		max_capacity: number
+		name: string
+		reservation_lead_time: number
+		updated_at: string
+	}
+	room_price: number
+	status: string
+	status_message: string | null
+	total_persons: number
+	total_price: number
+	type: string
+	updated_at: string
+}

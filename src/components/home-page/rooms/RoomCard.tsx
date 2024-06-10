@@ -1,7 +1,6 @@
 import Tagging from '@/components/layouts/Tagging'
 import { Button } from '@/components/ui/button'
 import { rupiahCurrency } from '@/lib/utils'
-import { MapPinIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
@@ -19,6 +18,19 @@ const RoomCard: FC<TRoomCardProps> = ({
 	roomBanner,
 	urlDetails,
 }) => {
+	const halfdayOption = roomPrice.find(option =>
+		option.reservation_type.name.includes('Halfday')
+	)
+	const nonHalfdayOption = roomPrice.find(
+		option =>
+			!option.reservation_type.name.includes('Halfday') &&
+			!option.reservation_type.name.includes('Podcast')
+	)
+
+	const podcastOption = roomPrice.filter(option =>
+		option.reservation_type.name.includes('Podcast')
+	)
+
 	return (
 		<div className='col-span-12 xl:col-span-4 p-3 rounded-xl bg-white'>
 			<div className='relative w-full h-60 rounded-md'>
@@ -36,24 +48,34 @@ const RoomCard: FC<TRoomCardProps> = ({
 				<div className='flex flex-col gap-2 px-3'>
 					<h1 className='font-semibold text-3xl md:text-4xl'>{roomName}</h1>
 					<div className='flex flex-col md:flex-row md:gap-6'>
-						<h2 className='text-xl md:text-2xl font-semibold text-greenBrand'>
-							{rupiahCurrency.format(roomPrice[0].price)}
-							<span className='text-xl text-greyMuted font-normal'>
-								/
-								{roomPrice[0].type === 'podcastRecording'
-									? 'Record'
-									: roomPrice[0].type}
-							</span>
-						</h2>
-						<h2 className='text-xl md:text-2xl font-semibold text-greenBrand'>
-							{rupiahCurrency.format(roomPrice[1].price)}
-							<span className='text-xl text-greyMuted font-normal'>
-								/
-								{roomPrice[1].type === 'podcastStreaming'
-									? 'Stream'
-									: roomPrice[1].type}
-							</span>
-						</h2>
+						{halfdayOption && (
+							<h2 className='text-xl md:text-2xl font-semibold text-greenBrand'>
+								{rupiahCurrency.format(halfdayOption.price)}
+								<span className='text-xl text-greyMuted font-normal'>
+									/Halfday
+								</span>
+							</h2>
+						)}
+						{nonHalfdayOption && (
+							<h2 className='text-xl md:text-2xl font-semibold text-greenBrand'>
+								{rupiahCurrency.format(nonHalfdayOption.price)}
+								<span className='text-xl text-greyMuted font-normal'>
+									/{nonHalfdayOption.reservation_type.name}
+								</span>
+							</h2>
+						)}
+						{podcastOption &&
+							podcastOption.map(item => (
+								<h2
+									key={item.id}
+									className='text-xl md:text-2xl font-semibold text-greenBrand'
+								>
+									{rupiahCurrency.format(item.price)}
+									<span className='text-xl text-greyMuted font-normal'>
+										/{item.reservation_type.name}
+									</span>
+								</h2>
+							))}
 					</div>
 				</div>
 				<Button

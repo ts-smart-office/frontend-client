@@ -45,7 +45,7 @@ const Details: FC<TDetailsProps> = ({ details }) => {
 								<p className='text-base lg:text-xl'>Reservation type</p>
 							</div>
 							<p className='capitalize text-base lg:text-xl text-greyMuted'>
-								{details.type}
+								{details.type_name}
 							</p>
 						</div>
 						<div className='w-full flex justify-between items-center'>

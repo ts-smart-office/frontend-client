@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { FC } from 'react'
 import Tagging from '../layouts/Tagging'
+import AboutVideo from './Video'
 
 const AboutUs: FC = () => {
 	return (
@@ -30,14 +31,15 @@ const AboutUs: FC = () => {
 				</div>
 				<div className='col-span-12 lg:col-span-7 flex flex-col gap-2'>
 					<Tagging label='5.00' text='Customer Satisfaction Rate' />
-					<div className='relative w-full h-72 md:h-[460px] rounded-2xl'>
+					{/* <div className='relative w-full h-72 md:h-[460px] rounded-2xl'>
 						<Image
 							src='/banner-2.jpg'
 							alt='banner-1'
 							fill
 							className='absolute w-full h-full object-cover rounded-2xl'
 						/>
-					</div>
+					</div> */}
+					<AboutVideo />
 				</div>
 			</div>
 		</div>

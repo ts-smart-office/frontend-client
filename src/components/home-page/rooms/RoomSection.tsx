@@ -2,6 +2,7 @@
 import { FC, useEffect, useState } from 'react'
 import RoomCard from './RoomCard'
 import { apiRooms } from '@/api/roomApi'
+import Spinner from '@/components/ui/spinner'
 
 const RoomSection: FC = () => {
 	const [rooms, setRooms] = useState<any[]>([])
@@ -31,17 +32,21 @@ const RoomSection: FC = () => {
 					Serangkai
 				</p>
 			</div>
-			<div className='w-full grid grid-cols-12 gap-4 lg:gap-8 max-md:px-4'>
-				{rooms.map((item, idx) => (
-					<RoomCard
-						key={idx}
-						roomBanner={item.image_urls[0]}
-						roomName={item.name}
-						roomPrice={item.prices}
-						urlDetails={item.id}
-					/>
-				))}
-			</div>
+			{rooms.length <= 0 ? (
+				<Spinner />
+			) : (
+				<div className='w-full grid grid-cols-12 gap-4 lg:gap-8 max-md:px-4'>
+					{rooms.map((item, idx) => (
+						<RoomCard
+							key={idx}
+							roomBanner={item.image_urls[0]}
+							roomName={item.name}
+							roomPrice={item.reservation_options}
+							urlDetails={item.id}
+						/>
+					))}
+				</div>
+			)}
 		</div>
 	)
 }

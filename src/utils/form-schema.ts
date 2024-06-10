@@ -30,9 +30,24 @@ export const uploadPaymentFile = z.object({
 export const reservationSchema = z.object({
 	room_id: z.number(),
 	date: z.coerce.date(),
-	type: z.enum(['halfday', 'fullday']),
+	type: z.coerce.number(),
 	total_persons: z.string().refine(val => !Number.isNaN(parseInt(val, 10))),
 	optional_message: z.string().optional(),
 	snack: z.coerce.number().optional(),
 	lunch: z.coerce.number().optional(),
+})
+
+export const reservationPodcastSchema = z.object({
+	room_id: z.number(),
+	date: z.coerce.date(),
+	type: z.coerce.number(),
+	duration_in_hours: z.coerce.number(),
+	optional_message: z.string().optional(),
+	start_time: z.string(),
+})
+
+export const ratingUser = z.object({
+	comment: z.string().min(4, {
+		message: 'Username must be at least 4 characters.',
+	}),
 })

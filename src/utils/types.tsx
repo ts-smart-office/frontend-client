@@ -33,13 +33,22 @@ export interface LunchCategory {
 	price: number
 }
 
+// export interface BodyReservation {
+// 	room_id: number
+// 	date: string
+// 	type: string
+// 	total_persons: number
+// 	optional_message?: string
+// 	foods?: Array<number> | null
+// }
+
 export interface BodyReservation {
 	room_id: number
 	date: string
-	type: string
+	option_id: number
 	total_persons: number
 	optional_message?: string
-	foods?: Array<number> | null
+	food_ids?: Array<number> | null
 }
 
 interface User {
@@ -74,10 +83,11 @@ interface Food {
 export interface IDetailsReservation {
 	id: string
 	date: string
-	type: string
+	type_name: string
 	total_persons: number
+	total_price?: number
 	room_price: number
-	total_price: number
+	price: number
 	optional_message: string | null
 	status: string
 	status_message: string | null
@@ -94,10 +104,18 @@ interface IFacilities {
 	name: string
 }
 
-interface IRoomPrice {
+interface ReservationOption {
 	id: number
-	type: string
+	reservation_type: ReservationType
 	price: number
+	pricing_unit: string
+}
+
+interface ReservationType {
+	id: number
+	name: string
+	start_time: string
+	end_time: string
 }
 
 export interface IRoomDetails {
@@ -107,9 +125,10 @@ export interface IRoomDetails {
 	description: string
 	reservation_lead_time: number
 	facilities: IFacilities[]
-	prices: IRoomPrice[]
+	reservation_options: ReservationOption[]
 	image_urls: string[]
 	reserved_dates: string[]
+	reviews: string[]
 }
 
 export interface IReservationsByUser {
@@ -131,9 +150,11 @@ export interface IReservationsByUser {
 	}
 	room_price: number
 	status: string
+	start_time: string
+	end_time: string
 	status_message: string | null
 	total_persons: number
 	total_price: number
-	type: string
+	type_name: string
 	updated_at: string
 }

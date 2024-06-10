@@ -51,3 +51,12 @@ export const apiUploadPayment = (id: string, data: any) => {
 		},
 	})
 }
+
+export const apiReviewReservation = (id: string, data: any) => {
+	return axiosInstance.post(`/api/reservations/${id}/review`, data, {
+		headers: {
+			accept: 'application/json',
+			'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+		},
+	})
+}

@@ -7,6 +7,8 @@ import LinkHome from '@/components/room-page/LinkHome'
 import { apiDetailsReservation } from '@/api/reservationApi'
 import { useParams } from 'next/navigation'
 import { IDetailsReservation } from '@/utils/types'
+import Link from 'next/link'
+import { ArrowLeftCircleIcon } from '@heroicons/react/24/outline'
 
 const DetailsReservation: FC = () => {
 	const [details, setDetails] = useState<IDetailsReservation | null>(null)
@@ -29,7 +31,13 @@ const DetailsReservation: FC = () => {
 
 	return (
 		<section className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center pt-20 lg:pt-0'>
-			<LinkHome />
+			<Link
+				href={'/myreservation'}
+				className='flex items-center gap-2 font-urbanist text-darkColor font-semibold py-5'
+			>
+				<ArrowLeftCircleIcon className='w-8 h-8 stroke-1' />
+				Back to my reservation
+			</Link>
 			<h1 className='font-semibold text-5xl'>Reservation details</h1>
 			{!details ? (
 				<div className='flex mt-12 mb-28'>Loading...</div>

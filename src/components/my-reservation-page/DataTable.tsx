@@ -13,6 +13,8 @@ import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import { apiReservationsUser } from '@/api/reservationApi'
 import { IReservationsByUser } from '@/utils/types'
 import Spinner from '../ui/spinner'
+import { rupiahCurrency } from '@/lib/utils'
+import MenuMyReservation from './MenuMyReservation'
 
 type TDataTableProps = {
 	userId: string
@@ -63,7 +65,7 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 
 	return (
 		<Table className='bg-white rounded-xl'>
-			<TableHeader>
+			<TableHeader className='text-base'>
 				<TableRow>
 					<TableHead>Room Name</TableHead>
 					<TableHead className='hidden md:table-cell'>
@@ -80,21 +82,26 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 					</TableHead>
 				</TableRow>
 			</TableHeader>
-			<TableBody>
+			<TableBody className='text-base'>
 				{reservation.map(item => (
 					<TableRow>
 						<TableCell className='font-medium'>{item.room.name}</TableCell>
-						<TableCell className='hidden md:table-cell'>{item.type}</TableCell>
+						<TableCell className='hidden md:table-cell'>
+							{item.type_name}
+						</TableCell>
 						<TableCell>{item.date}</TableCell>
 						<TableCell className='hidden md:table-cell'>
-							{item.type === 'fullday' ? '08.00 - 16.00' : '08.00 - 12.00'}
+							{item.start_time} - {item.end_time}
 						</TableCell>
 						<TableCell className='hidden md:table-cell'>
-							{item.total_price}
+							{rupiahCurrency.format(item.total_price)}
 						</TableCell>
 						<TableCell>
-							{item.status === 'completed' ? (
-								<Badge variant='default' className='bg-greenBrand'>
+							{item.status === 'completed' || item.status === 'approved' ? (
+								<Badge
+									variant='default'
+									className='bg-greenBrand hover:bg-greenBrand'
+								>
 									{item.status}
 								</Badge>
 							) : (
@@ -102,7 +109,7 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 							)}
 						</TableCell>
 						<TableCell>
-							<EllipsisVerticalIcon className='w-4 h-4' />
+							<MenuMyReservation link={item.id} status={item.status} />
 						</TableCell>
 					</TableRow>
 				))}

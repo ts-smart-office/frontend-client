@@ -43,7 +43,11 @@ import { useRouter } from 'next/navigation'
 import moment from 'moment'
 
 type TFormReservationProps = {
-	reservedDates: string[]
+	reservedDates: {
+		date: string
+		start_time: string
+		end_time: string
+	}[]
 	details: IRoomDetails
 }
 
@@ -64,28 +68,29 @@ const FormReservation: FC<TFormReservationProps> = ({
 		const bodyReservation: BodyReservation = {
 			room_id: details.id,
 			date: moment(values.date).format('YYYY-MM-DD'),
-			type: values.type,
+			option_id: values.type,
 			total_persons: parseInt(values.total_persons),
 			optional_message: values.optional_message,
-			foods: null as Array<number> | null,
+			food_ids: null as Array<number> | null,
 		}
 
 		if (values.snack && values.lunch) {
-			bodyReservation.foods = [values.snack, values.lunch]
+			bodyReservation.food_ids = [values.snack, values.lunch]
 		} else if (values.snack) {
-			bodyReservation.foods = [values.snack]
+			bodyReservation.food_ids = [values.snack]
 		} else if (values.lunch) {
-			bodyReservation.foods = [values.lunch]
+			bodyReservation.food_ids = [values.lunch]
 		} else {
-			delete bodyReservation.foods
+			delete bodyReservation.food_ids
 		}
+
+		console.log(bodyReservation)
 
 		await apiCreateReservation(bodyReservation)
 			.then(res => {
 				toast({
 					description: res.data.message,
 				})
-				console.log(res)
 				return router.push(`/myreservation/${res.data.data.id}`)
 			})
 			.catch(error => {
@@ -159,7 +164,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 											disabled={date =>
 												date < new Date() ||
 												reservedDates.some(reservedDate =>
-													isSameDay(date, new Date(reservedDate))
+													isSameDay(new Date(date), new Date(reservedDate.date))
 												)
 											}
 											initialFocus
@@ -202,49 +207,32 @@ const FormReservation: FC<TFormReservationProps> = ({
 							<FormControl>
 								<RadioGroup
 									onValueChange={field.onChange}
-									defaultValue={field.value}
+									defaultValue={field?.value?.toString()}
 									className='flex flex-col'
 								>
-									<FormItem className='flex items-center space-x-3'>
-										<FormControl>
-											<RadioGroupItem value={details.prices[0].type} />
-										</FormControl>
-										<FormLabel className='font-normal text-base lg:text-lg'>
-											<p className='font-semibold mb-2'>
-												{details.prices[0].type === 'podcastRecording'
-													? 'Recording'
-													: details.prices[0].type}{' '}
-												({rupiahCurrency.format(details.prices[0].price)}/
-												{details.prices[0].type === 'podcastRecording'
-													? 'Hour'
-													: 'Person'}
-												)
-											</p>
-											{details.prices[0].type === 'halfday' && (
-												<p>Start at 08.00 AM - 12.00 PM</p>
-											)}
-										</FormLabel>
-									</FormItem>
-									<FormItem className='flex items-center space-x-3'>
-										<FormControl>
-											<RadioGroupItem value={details.prices[1].type} />
-										</FormControl>
-										<FormLabel className='font-normal text-base lg:text-lg flex flex-col'>
-											<p className='font-semibold mb-2'>
-												{details.prices[1].type === 'podcastStreaming'
-													? 'Streaming'
-													: details.prices[1].type}{' '}
-												({rupiahCurrency.format(details.prices[1].price)}/
-												{details.prices[1].type === 'podcastStreaming'
-													? 'Hour'
-													: 'Person'}
-												)
-											</p>
-											{details.prices[1].type === 'fullday' && (
-												<p>Start at 08.00 AM - 16.00 PM</p>
-											)}
-										</FormLabel>
-									</FormItem>
+									{details.reservation_options.map(item => (
+										<FormItem className='flex items-center space-x-3'>
+											<FormControl>
+												<RadioGroupItem
+													value={item.id.toString()}
+													className='mt-2'
+												/>
+											</FormControl>
+											<FormLabel className='font-normal text-base lg:text-lg flex flex-col'>
+												<p className='font-semibold'>
+													{item.reservation_type.name} -{' '}
+													{rupiahCurrency.format(item.price)}/
+													{item.pricing_unit}
+												</p>
+												{!item.reservation_type.name.includes('Podcast') && (
+													<p>
+														Start at {item.reservation_type.start_time} -{' '}
+														{item.reservation_type.end_time}
+													</p>
+												)}
+											</FormLabel>
+										</FormItem>
+									))}
 								</RadioGroup>
 							</FormControl>
 							<FormMessage />

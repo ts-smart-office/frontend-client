@@ -1,6 +1,7 @@
 'use client'
 import { apiDetailsRoom } from '@/api/roomApi'
 import Tagging from '@/components/layouts/Tagging'
+import FormPodcast from '@/components/room-page/FormPodcast'
 import FormReservation from '@/components/room-page/FormReservation'
 import LinkHome from '@/components/room-page/LinkHome'
 import RoomDetails from '@/components/room-page/RoomDetails'
@@ -58,10 +59,17 @@ const RoomPage: FC = () => {
 								<h1 className='text-xl lg:text-2xl xl:text-3xl font-semibold'>
 									Reservation Information
 								</h1>
-								<FormReservation
-									details={details}
-									reservedDates={details.reserved_dates}
-								/>
+								{!details.name.includes('Podcast') ? (
+									<FormReservation
+										details={details}
+										reservedDates={details.reserved_dates}
+									/>
+								) : (
+									<FormPodcast
+										details={details}
+										reservedDates={details.reserved_dates}
+									/>
+								)}
 							</div>
 						</div>
 					</div>

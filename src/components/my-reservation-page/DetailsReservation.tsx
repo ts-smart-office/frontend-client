@@ -45,7 +45,11 @@ const DetailsReservation: FC = () => {
 				<div className='flex flex-col-reverse xl:flex-row justify-between gap-8 xl:gap-32 mt-12 mb-28'>
 					<div className='w-full xl:w-1/2 flex flex-col gap-11'>
 						<PriceSummary details={details} />
-						<UploadPayment urlImage={details.proof_of_payment_url} />
+						<UploadPayment
+							urlImage={details.proof_of_payment_url}
+							expiredTime={details.expires_at}
+							statusReservation={details.status}
+						/>
 					</div>
 					<Details details={details} />
 				</div>

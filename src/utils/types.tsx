@@ -94,6 +94,7 @@ export interface IDetailsReservation {
 	proof_of_payment_url: string | null
 	created_at: string
 	updated_at: string
+	expires_at: string
 	user: User
 	room: Room
 	foods: Food[]

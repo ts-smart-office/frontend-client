@@ -3,8 +3,10 @@ const nextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				protocol: 'https',
-				hostname: 'tssora.s3.amazonaws.com',
+				protocol: 'http',
+				hostname: 'localhost',
+				port: '8000',
+				pathname: '/**',
 			},
 		],
 	},

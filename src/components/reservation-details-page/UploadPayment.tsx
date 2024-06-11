@@ -7,15 +7,22 @@ import { z } from 'zod'
 import { Form } from '../ui/form'
 import { Button } from '../ui/button'
 import CustomUpload from './CustomUpload'
-import { apiUploadPayment } from '@/api/reservationApi'
+import { apiCancelReservation, apiUploadPayment } from '@/api/reservationApi'
 import { useToast } from '../ui/use-toast'
 import { useParams, useRouter } from 'next/navigation'
+import CountdownTimer from './CountdownUpload'
 
 type TUploadPaymentProps = {
 	urlImage: string | null
+	expiredTime: string
+	statusReservation: string
 }
 
-const UploadPayment: FC<TUploadPaymentProps> = ({ urlImage }) => {
+const UploadPayment: FC<TUploadPaymentProps> = ({
+	urlImage,
+	expiredTime,
+	statusReservation,
+}) => {
 	const { toast } = useToast()
 	const router = useRouter()
 	const params = useParams()
@@ -52,8 +59,32 @@ const UploadPayment: FC<TUploadPaymentProps> = ({ urlImage }) => {
 		}
 	}
 
+	const cancelReservation = async () => {
+		await apiCancelReservation(params.id.toString(), {
+			_method: 'put',
+			status: 'canceledByUser',
+		})
+			.then(res => {
+				toast({
+					description: res.data.message,
+				})
+				setTimeout(function () {
+					router.push('/myreservation')
+				}, 1000)
+			})
+			.catch(error => {
+				if (error.response) {
+					toast({
+						description: error.response.data.message,
+					})
+				}
+			})
+	}
+
+	const disabledCancel = statusReservation === 'waitingForPayment'
+
 	return (
-		<div className='w-full flex flex-col'>
+		<div className='w-full flex flex-col gap-4'>
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
@@ -61,23 +92,37 @@ const UploadPayment: FC<TUploadPaymentProps> = ({ urlImage }) => {
 				>
 					<CustomUpload form={form} name='attachment' urlImage={urlImage} />
 					<div className='flex gap-6'>
-						<Button
-							type='submit'
-							disabled
-							className='w-full bg-rose-400 rounded-full hover:bg-opacity-80 py-6 sm:text-lg hover:bg-greenBrand'
-						>
-							Cancel reservation
-						</Button>
-						<Button
-							type='submit'
-							disabled={!!urlImage}
-							className='w-full bg-greenBrand rounded-full hover:bg-opacity-80 py-6 sm:text-lg hover:bg-greenBrand'
-						>
-							Make reservation
-						</Button>
+						{statusReservation === 'canceledByUser' ? (
+							<Button
+								type='button'
+								disabled
+								className='w-full bg-rose-400 rounded-full hover:bg-opacity-80 py-6 sm:text-lg hover:bg-rose-400'
+							>
+								Cancel by user
+							</Button>
+						) : (
+							<>
+								<Button
+									type='button'
+									disabled={!disabledCancel}
+									onClick={cancelReservation}
+									className='w-full bg-rose-400 rounded-full hover:bg-opacity-80 py-6 sm:text-lg hover:bg-rose-400'
+								>
+									Cancel reservation
+								</Button>
+								<Button
+									type='submit'
+									disabled={!!urlImage}
+									className='w-full bg-greenBrand rounded-full hover:bg-opacity-80 py-6 sm:text-lg hover:bg-greenBrand'
+								>
+									Make reservation
+								</Button>
+							</>
+						)}
 					</div>
 				</form>
 			</Form>
+			{disabledCancel && <CountdownTimer expiredTime={expiredTime} />}
 		</div>
 	)
 }

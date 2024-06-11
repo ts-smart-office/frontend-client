@@ -2,6 +2,7 @@ import { rupiahCurrency } from '@/lib/utils'
 import { IDetailsReservation } from '@/utils/types'
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { FC } from 'react'
+import CountdownTimer from './CountdownUpload'
 
 type TPriceSummaryProps = {
 	details: IDetailsReservation | null
@@ -30,12 +31,6 @@ const PriceSummary: FC<TPriceSummaryProps> = ({ details }) => {
 	)
 	const totalPayment = rupiahCurrency.format(
 		details.price * details.total_persons +
-			(lunchFoods ? lunchFoods.price * details.total_persons : 0) +
-			(snackFoods ? snackFoods.price * details.total_persons : 0)
-	)
-
-	const totalPaymentPodcast = rupiahCurrency.format(
-		details.price +
 			(lunchFoods ? lunchFoods.price * details.total_persons : 0) +
 			(snackFoods ? snackFoods.price * details.total_persons : 0)
 	)

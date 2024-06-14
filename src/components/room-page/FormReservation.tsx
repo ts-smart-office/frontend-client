@@ -63,6 +63,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 			room_id: details.id,
 		},
 	})
+	const [loadBtn, setLoadBtn] = useState<boolean>(false)
 
 	const onSubmit = async (values: z.infer<typeof reservationSchema>) => {
 		const bodyReservation: BodyReservation = {
@@ -84,7 +85,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 			delete bodyReservation.food_ids
 		}
 
-		console.log(bodyReservation)
+		setLoadBtn(true)
 
 		await apiCreateReservation(bodyReservation)
 			.then(res => {
@@ -100,6 +101,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 					})
 				}
 			})
+			.finally(() => setLoadBtn(false))
 	}
 
 	const [snack, setSnack] = useState<SnackCategory[]>([])
@@ -381,9 +383,12 @@ const FormReservation: FC<TFormReservationProps> = ({
 				<div className='flex justify-end mt-4 md:mt-6'>
 					<Button
 						type='submit'
-						className='bg-greenBrand rounded-full py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
+						disabled={loadBtn}
+						className={`bg-greenBrand rounded-full py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand ${
+							loadBtn ? 'opacity-50 cursor-not-allowed' : ''
+						}`}
 					>
-						Request reservation now
+						{loadBtn ? 'Requesting...' : 'Request reservation now'}
 					</Button>
 				</div>
 			</form>

@@ -128,7 +128,11 @@ export interface IRoomDetails {
 	facilities: IFacilities[]
 	reservation_options: ReservationOption[]
 	image_urls: string[]
-	reserved_dates: string[]
+	reserved_dates: {
+		date: string
+		start_time: string
+		end_time: string
+	}[]
 	reviews: string[]
 }
 

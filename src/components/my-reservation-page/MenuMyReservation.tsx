@@ -4,28 +4,17 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from '../ui/dialog'
 import Link from 'next/link'
-import RatingUser from './RatingUser'
 
 type TMenuMyReservationProps = {
 	link: string
-	status: string
 }
 
-const MenuMyReservation: FC<TMenuMyReservationProps> = ({ link, status }) => {
+const MenuMyReservation: FC<TMenuMyReservationProps> = ({ link }) => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -39,27 +28,6 @@ const MenuMyReservation: FC<TMenuMyReservationProps> = ({ link, status }) => {
 				<DropdownMenuItem asChild>
 					<Link href={`/myreservation/${link}`}>Details</Link>
 				</DropdownMenuItem>
-				{status === 'approved' && (
-					<>
-						<DropdownMenuSeparator />
-						<Dialog>
-							<DialogTrigger className='w-full'>
-								<DropdownMenuItem onSelect={e => e.preventDefault()}>
-									Review
-								</DropdownMenuItem>
-							</DialogTrigger>
-							<DialogContent>
-								<DialogHeader>
-									<DialogTitle>Review</DialogTitle>
-									<DialogDescription>
-										Share your experience for this reservation
-									</DialogDescription>
-								</DialogHeader>
-								<RatingUser idReservation={link} />
-							</DialogContent>
-						</Dialog>
-					</>
-				)}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	)

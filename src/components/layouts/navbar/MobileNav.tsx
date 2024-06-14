@@ -5,11 +5,29 @@ import { FC, useState } from 'react'
 import { MenuIcon, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { navMenu } from '@/utils/constants'
+import { useToast } from '@/components/ui/use-toast'
+import { apiLogout } from '@/api/authApi'
+import { deleteUser } from '@/lib/actions'
 
-const MobileNav: FC = () => {
+type TMobileNav = {
+	userSession: any
+}
+
+const MobileNav: FC<TMobileNav> = ({ userSession }) => {
 	const [menu, setMenu] = useState(false)
 	const toggleMenu = () => {
 		setMenu(!menu)
+	}
+
+	const { toast } = useToast()
+	const userLogout = async () => {
+		const res = await apiLogout()
+		if (res) {
+			toast({
+				description: 'Logout success',
+			})
+		}
+		await deleteUser()
 	}
 
 	return (
@@ -49,16 +67,28 @@ const MobileNav: FC = () => {
 							</Link>
 						))}
 
-						<div className='flex'>
-							<Button
-								asChild
-								variant={'outline'}
-								className='border-dark rounded-full hover:bg-green-brand hover:border-green-brand font-semibold hover:text-[#f9f9f9] transition-all duration-300 text-base h-14'
-								size={'lg'}
-							>
-								<Link href={'/auth/signin'}>Sign In / Sign Up</Link>
-							</Button>
-						</div>
+						{userSession ? (
+							<>
+								<Link href='/myreservation'>My reservation</Link>
+								<Button
+									onClick={userLogout}
+									className='bg-rose-400 hover:bg-rose-400/80'
+								>
+									Logout
+								</Button>
+							</>
+						) : (
+							<div className='flex'>
+								<Button
+									asChild
+									variant={'outline'}
+									className='border-dark rounded-full hover:bg-green-brand hover:border-green-brand font-semibold hover:text-[#f9f9f9] transition-all duration-300 text-base h-14'
+									size={'lg'}
+								>
+									<Link href={'/auth/signin'}>Sign In / Sign Up</Link>
+								</Button>
+							</div>
+						)}
 					</div>
 				</div>
 			) : (

@@ -28,20 +28,9 @@ import { CalendarIcon } from '@heroicons/react/24/outline'
 import { Calendar } from '../ui/calendar'
 import { RadioGroupItem, RadioGroup } from '../ui/radio-group'
 import { Textarea } from '../ui/textarea'
-import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
-} from '../ui/accordion'
-import { apiCreateReservation, apiFoods } from '@/api/reservationApi'
+import { apiCreateReservation } from '@/api/reservationApi'
 import { useToast } from '../ui/use-toast'
-import {
-	BodyReservation,
-	IRoomDetails,
-	LunchCategory,
-	SnackCategory,
-} from '@/utils/types'
+import { IRoomDetails } from '@/utils/types'
 import { useRouter } from 'next/navigation'
 import moment from 'moment'
 import {
@@ -70,6 +59,7 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 			room_id: details.id,
 		},
 	})
+	const [loadBtn, setLoadBtn] = useState<boolean>(false)
 
 	const onSubmit = async (values: z.infer<typeof reservationPodcastSchema>) => {
 		const bodyReservation: any = {
@@ -80,6 +70,8 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 			duration_in_hours: values.duration_in_hours,
 			optional_message: values.optional_message,
 		}
+
+		setLoadBtn(true)
 
 		await apiCreateReservation(bodyReservation)
 			.then(res => {
@@ -94,6 +86,9 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 						description: error.response.data.message,
 					})
 				}
+			})
+			.finally(() => {
+				setLoadBtn(false)
 			})
 	}
 
@@ -147,12 +142,19 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 											mode='single'
 											selected={field.value}
 											onSelect={field.onChange}
-											disabled={date =>
-												date < new Date() ||
-												reservedDates.some(reservedDate =>
-													isSameDay(new Date(date), new Date(reservedDate.date))
+											disabled={date => {
+												const today = new Date()
+												const nextWeek = new Date(today)
+												nextWeek.setDate(nextWeek.getDate() + 7)
+
+												today.setHours(0, 0, 0, 0)
+												nextWeek.setHours(0, 0, 0, 0)
+												date.setHours(0, 0, 0, 0)
+
+												return (
+													(date >= today && date <= nextWeek) || date < today
 												)
-											}
+											}}
 											initialFocus
 										/>
 									</PopoverContent>
@@ -283,9 +285,12 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 				<div className='flex justify-end mt-4 md:mt-6'>
 					<Button
 						type='submit'
-						className='bg-greenBrand rounded-full py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
+						disabled={loadBtn}
+						className={`bg-greenBrand rounded-full py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand ${
+							loadBtn ? 'opacity-50 cursor-not-allowed' : ''
+						}`}
 					>
-						Request reservation now
+						{loadBtn ? 'Making reservation...' : 'Make reservation'}
 					</Button>
 				</div>
 			</form>

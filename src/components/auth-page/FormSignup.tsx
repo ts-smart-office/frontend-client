@@ -1,5 +1,5 @@
 'use client'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -27,8 +27,10 @@ const FormSignup: FC = () => {
 
 	const router = useRouter()
 	const { toast } = useToast()
+	const [loadBtn, setLoadBtn] = useState<boolean>(false)
 
 	const onSubmit = async (values: z.infer<typeof signupSchema>) => {
+		setLoadBtn(true)
 		await apiCsrfToken()
 		await apiRegister(values)
 			.then(res => {
@@ -48,6 +50,7 @@ const FormSignup: FC = () => {
 					})
 				}
 			})
+			.finally(() => setLoadBtn(false))
 	}
 
 	return (
@@ -172,9 +175,12 @@ const FormSignup: FC = () => {
 				<div className='flex justify-center pt-4'>
 					<Button
 						type='submit'
-						className='bg-greenBrand rounded-full w-1/2 py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
+						disabled={loadBtn}
+						className={`bg-greenBrand rounded-full w-2/3 lg:w-1/2 py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand ${
+							loadBtn ? 'opacity-50 cursor-not-allowed' : ''
+						}`}
 					>
-						Sign up
+						{loadBtn ? 'Signing up...' : 'Sign up'}
 					</Button>
 				</div>
 			</form>

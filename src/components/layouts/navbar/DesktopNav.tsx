@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button'
-import { getUser } from '@/lib/actions'
 import { navMenu } from '@/utils/constants'
 import Link from 'next/link'
 import { FC } from 'react'
 import DropdownUser from './DropdownUser'
 
-const DesktopNav: FC = async () => {
-	const userSession = await getUser()
+type TDesktopNav = {
+	userSession: any
+}
 
+const DesktopNav: FC<TDesktopNav> = ({ userSession }) => {
 	return (
 		<div className='hidden 2xl:max-w-[1600px] 2xl:mx-auto py-8 px-20 lg:block animate-in fade-in zoom-in'>
 			<div className='flex justify-between items-center'>

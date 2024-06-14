@@ -9,12 +9,21 @@ import {
 	TableRow,
 } from '../ui/table'
 import { Badge } from '../ui/badge'
-import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
 import { apiReservationsUser } from '@/api/reservationApi'
 import { IReservationsByUser } from '@/utils/types'
 import Spinner from '../ui/spinner'
 import { rupiahCurrency } from '@/lib/utils'
 import MenuMyReservation from './MenuMyReservation'
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '../ui/dialog'
+import RatingUser from './RatingUser'
+import { Rating } from 'react-simple-star-rating'
 
 type TDataTableProps = {
 	userId: string
@@ -23,6 +32,11 @@ type TDataTableProps = {
 const DataTable: FC<TDataTableProps> = ({ userId }) => {
 	const [reservation, setReservation] = useState<IReservationsByUser[]>([])
 	const [isLoading, setIsLoading] = useState<boolean>(true)
+	const [ratingValue, setRatingValue] = useState(0)
+
+	const handleRating = (rate: number) => {
+		setRatingValue(rate)
+	}
 
 	const getReservations = async () => {
 		await apiReservationsUser(userId)
@@ -40,8 +54,6 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 	useEffect(() => {
 		getReservations()
 	}, [])
-
-	console.log(reservation)
 
 	if (isLoading) {
 		return (
@@ -77,6 +89,7 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 					</TableHead>
 					<TableHead className='hidden md:table-cell'>Total Price</TableHead>
 					<TableHead>Status</TableHead>
+					<TableHead>Review</TableHead>
 					<TableHead>
 						<span className='sr-only'>Actions</span>
 					</TableHead>
@@ -84,7 +97,7 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 			</TableHeader>
 			<TableBody className='text-base'>
 				{reservation.map(item => (
-					<TableRow>
+					<TableRow key={item.id}>
 						<TableCell className='font-medium'>{item.room.name}</TableCell>
 						<TableCell className='hidden md:table-cell'>
 							{item.type_name}
@@ -109,7 +122,32 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 							)}
 						</TableCell>
 						<TableCell>
-							<MenuMyReservation link={item.id} status={item.status} />
+							<Dialog>
+								<DialogTrigger>
+									<Rating
+										SVGclassName={'inline-block'}
+										size={20}
+										transition
+										onClick={handleRating}
+										allowHover={false}
+									/>
+								</DialogTrigger>
+								<DialogContent>
+									<DialogHeader>
+										<DialogTitle>Review</DialogTitle>
+										<DialogDescription>
+											Share your experience using our reservation
+										</DialogDescription>
+									</DialogHeader>
+									<RatingUser
+										idReservation={item.id}
+										currentRating={ratingValue}
+									/>
+								</DialogContent>
+							</Dialog>
+						</TableCell>
+						<TableCell>
+							<MenuMyReservation link={item.id} />
 						</TableCell>
 					</TableRow>
 				))}

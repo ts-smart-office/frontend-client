@@ -1,5 +1,5 @@
 'use client'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '../ui/button'
 import { signinSchema } from '@/utils/form-schema'
 import Link from 'next/link'
-import { apiCsrfToken, apiLogin, apiLogout } from '@/api/authApi'
+import { apiCsrfToken, apiLogin } from '@/api/authApi'
 import { handleUser } from '@/lib/actions'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
@@ -26,8 +26,10 @@ const FormSignin: FC = () => {
 	const form = useForm<z.infer<typeof signinSchema>>({
 		resolver: zodResolver(signinSchema),
 	})
+	const [loadBtn, setLoadBtn] = useState<boolean>(false)
 
 	const onSubmit = async (values: z.infer<typeof signinSchema>) => {
+		setLoadBtn(true)
 		await apiCsrfToken()
 		await apiLogin(values)
 			.then(res => {
@@ -46,6 +48,9 @@ const FormSignin: FC = () => {
 						description: error.response.data.message,
 					})
 				}
+			})
+			.finally(() => {
+				setLoadBtn(false)
 			})
 	}
 
@@ -90,7 +95,7 @@ const FormSignin: FC = () => {
 					)}
 				/>
 				<div className='lg:text-lg'>
-					Don’t have an account?
+					Don’t have an account?{' '}
 					<span className='font-medium text-greenBrand'>
 						<Link href='/signup'>Sign up</Link>
 					</span>
@@ -98,9 +103,12 @@ const FormSignin: FC = () => {
 				<div className='flex justify-center pt-4'>
 					<Button
 						type='submit'
-						className='bg-greenBrand rounded-full w-2/3 lg:w-1/2 py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
+						disabled={loadBtn}
+						className={`bg-greenBrand rounded-full w-2/3 lg:w-1/2 py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand ${
+							loadBtn ? 'opacity-50 cursor-not-allowed' : ''
+						}`}
 					>
-						Sign in
+						{loadBtn ? 'Signing in...' : 'Sign in'}
 					</Button>
 				</div>
 			</form>

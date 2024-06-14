@@ -48,7 +48,12 @@ const DropdownUser: FC<TDropdownUserProps> = ({ userSession }) => {
 					<Link href='/myreservation'>My reservations</Link>
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
-				<Button variant='ghost' className='w-full' onClick={userLogout} asChild>
+				<Button
+					variant='ghost'
+					className='w-full cursor-pointer'
+					onClick={userLogout}
+					asChild
+				>
 					<DropdownMenuItem>Logout</DropdownMenuItem>
 				</Button>
 			</DropdownMenuContent>

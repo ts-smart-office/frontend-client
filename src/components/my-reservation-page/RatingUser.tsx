@@ -1,14 +1,6 @@
-'use client'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Rating } from 'react-simple-star-rating'
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '../ui/form'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { useForm } from 'react-hook-form'
@@ -17,18 +9,66 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ratingUser } from '@/utils/form-schema'
 import { apiReviewReservation } from '@/api/reservationApi'
 import { useToast } from '../ui/use-toast'
+import { Checkbox } from '@headlessui/react'
+
+type Segment = {
+	name: string
+}
 
 type TRatingUserProps = {
 	idReservation: string
+	currentRating: number
 }
 
-const RatingUser: FC<TRatingUserProps> = ({ idReservation }) => {
+const segmentsGood: Segment[] = [
+	{ name: 'Sangat Bersih' },
+	{ name: 'Fasilitas Lengkap' },
+	{ name: 'Pelayanan sangat baik' },
+]
+
+const segmentsMid: Segment[] = [
+	{ name: 'Cukup Bersih' },
+	{ name: 'Fasilitas Cukup' },
+	{ name: 'Pelayanan Cukup' },
+]
+
+const segmentsLow: Segment[] = [
+	{ name: 'Kurang Bersih' },
+	{ name: 'Fasilitas Kurang' },
+	{ name: 'Pelayanan Kurang' },
+]
+
+const RatingUser: FC<TRatingUserProps> = ({ idReservation, currentRating }) => {
 	const { toast } = useToast()
-	const [ratingValue, setRatingValue] = useState(0)
+	const [ratingValue, setRatingValue] = useState<number>(currentRating)
+	const [selectedItems, setSelectedItems] = useState<Segment[]>([])
+	const [selectedSegment, setSelectedSegment] = useState<Segment[]>([])
+
+	const handleCheckboxChange = (item: Segment) => {
+		if (selectedItems.includes(item)) {
+			setSelectedItems(
+				selectedItems.filter(selectedItem => selectedItem !== item)
+			)
+		} else {
+			setSelectedItems([...selectedItems, item])
+		}
+	}
 
 	const handleRating = (rate: number) => {
 		setRatingValue(rate)
 	}
+
+	useEffect(() => {
+		if (ratingValue >= 1 && ratingValue <= 2) {
+			setSelectedSegment(segmentsLow)
+		} else if (ratingValue >= 3 && ratingValue <= 4) {
+			setSelectedSegment(segmentsMid)
+		} else if (ratingValue === 5) {
+			setSelectedSegment(segmentsGood)
+		} else {
+			setSelectedSegment([])
+		}
+	}, [ratingValue])
 
 	const form = useForm<z.infer<typeof ratingUser>>({
 		resolver: zodResolver(ratingUser),
@@ -38,9 +78,9 @@ const RatingUser: FC<TRatingUserProps> = ({ idReservation }) => {
 		const bodyRating = {
 			rating: ratingValue,
 			comment: data.comment,
+			tags: selectedItems.map(item => item.name),
 		}
 
-		console.log(bodyRating)
 		await apiReviewReservation(idReservation!, bodyRating)
 			.then(res => {
 				toast({
@@ -61,11 +101,27 @@ const RatingUser: FC<TRatingUserProps> = ({ idReservation }) => {
 		<div className='w-full flex flex-col items-center gap-4'>
 			<Rating
 				SVGclassName={'inline-block'}
+				initialValue={ratingValue}
 				onClick={handleRating}
 				size={50}
 				transition
-				allowFraction
 			/>
+			<div className='w-full flex gap-2'>
+				{selectedSegment.map(item => (
+					<Checkbox
+						key={item.name}
+						checked={selectedItems.includes(item)}
+						onChange={() => handleCheckboxChange(item)}
+						className={`flex items-center p-2 rounded-lg cursor-pointer ${
+							selectedItems.includes(item)
+								? 'bg-greenBrand text-white'
+								: 'bg-greenBrand/10'
+						}`}
+					>
+						<span className='font-semibold'>{item.name}</span>
+					</Checkbox>
+				))}
+			</div>
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}

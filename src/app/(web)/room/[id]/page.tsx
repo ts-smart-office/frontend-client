@@ -49,7 +49,12 @@ const RoomPage: FC = () => {
 				<RoomName name={details.name} />
 				<div className='w-full grid grid-cols-4 sm:grid-cols-12 gap-8 pt-12'>
 					<div className='col-span-4 sm:col-span-7 xl:col-span-8'>
-						<Tagging label='New' text='Modern building' />
+						<div className='w-fit flex items-center justify-center gap-2 font-urbanist text-base font-medium p-2 border border-greyMuted rounded-full'>
+							<div className='bg-greenBrand py-1 px-3 text-white rounded-full'>
+								New
+							</div>
+							<div className='text-greyMuted'>Modern buildings</div>
+						</div>
 						<RoomImages details={details} />
 						<RoomDetails details={details} />
 					</div>

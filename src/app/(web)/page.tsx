@@ -11,16 +11,25 @@ export default function Home() {
 			<section className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center'>
 				<HeroSection />
 			</section>
-			<section className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center'>
+			<section
+				id='features'
+				className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center'
+			>
 				<FeaturesSection />
 			</section>
 			<section className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center'>
 				<AboutUs />
 			</section>
-			<section className='bg-blue-50 flex flex-col justify-center mt-32'>
+			<section
+				id='rooms'
+				className='bg-blue-50 flex flex-col justify-center mt-32'
+			>
 				<RoomSection />
 			</section>
-			<section className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center'>
+			<section
+				id='news'
+				className='px-4 lg:px-20 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center'
+			>
 				<NewsSection />
 			</section>
 			<section className='bg-blue-50 flex flex-col justify-center'>

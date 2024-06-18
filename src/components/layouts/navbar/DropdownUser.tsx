@@ -42,7 +42,11 @@ const DropdownUser: FC<TDropdownUserProps> = ({ userSession }) => {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align='end'>
-				<DropdownMenuLabel>My Account</DropdownMenuLabel>
+				<DropdownMenuLabel>
+					{userSession.role.name.includes('Internal')
+						? 'Internal account'
+						: 'My account'}
+				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem>
 					<Link href='/myreservation'>My reservations</Link>

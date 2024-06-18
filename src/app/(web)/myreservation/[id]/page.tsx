@@ -10,7 +10,7 @@ const ReservationDetails = async () => {
 
 	return (
 		<main className='w-full font-urbanist'>
-			<DetailsReservation />
+			<DetailsReservation user={userSession} />
 		</main>
 	)
 }

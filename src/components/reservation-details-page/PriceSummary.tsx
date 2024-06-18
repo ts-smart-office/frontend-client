@@ -1,14 +1,15 @@
 import { rupiahCurrency } from '@/lib/utils'
-import { IDetailsReservation } from '@/utils/types'
+import { IDetailsReservation, UserSession } from '@/utils/types'
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { FC } from 'react'
 import CountdownTimer from './CountdownUpload'
 
 type TPriceSummaryProps = {
 	details: IDetailsReservation | null
+	user: UserSession
 }
 
-const PriceSummary: FC<TPriceSummaryProps> = ({ details }) => {
+const PriceSummary: FC<TPriceSummaryProps> = ({ details, user }) => {
 	if (!details) {
 		return null
 	}
@@ -27,11 +28,6 @@ const PriceSummary: FC<TPriceSummaryProps> = ({ details }) => {
 	)
 	const foodTotal = rupiahCurrency.format(
 		(lunchFoods ? lunchFoods.price * details.total_persons : 0) +
-			(snackFoods ? snackFoods.price * details.total_persons : 0)
-	)
-	const totalPayment = rupiahCurrency.format(
-		details.price * details.total_persons +
-			(lunchFoods ? lunchFoods.price * details.total_persons : 0) +
 			(snackFoods ? snackFoods.price * details.total_persons : 0)
 	)
 
@@ -93,13 +89,39 @@ const PriceSummary: FC<TPriceSummaryProps> = ({ details }) => {
 						</>
 					)}
 				</div>
-				<div className='flex justify-between'>
-					<p className='text-3xl font-semibold'>Total payment</p>
-					{!details.room.name.includes('Podcast') ? (
-						<p className='text-3xl font-semibold'>{totalPayment}</p>
-					) : (
-						<p className='text-3xl font-semibold'>{reservationTotalPodcast}</p>
+				<div className='flex flex-col gap-4'>
+					{user.role.name.includes('Internal') && (
+						<div className='flex flex-col gap-2'>
+							<div className='flex justify-between'>
+								<p className='text-xl font-semibold'>
+									Room discount internal member
+								</p>
+								<p className='text-xl font-semibold text-rose-500'>
+									100%({rupiahCurrency.format(details.room_discount)})
+								</p>
+							</div>
+							<div className='flex justify-between'>
+								<p className='text-xl font-semibold'>
+									Food discount internal member
+								</p>
+								<p className='text-xl font-semibold text-rose-500'>
+									100%({rupiahCurrency.format(details.food_discount)})
+								</p>
+							</div>
+						</div>
 					)}
+					<div className='flex justify-between'>
+						<p className='text-3xl font-semibold'>Total payment</p>
+						{!details.room.name.includes('Podcast') ? (
+							<p className='text-3xl font-semibold'>
+								{rupiahCurrency.format(details.total_price)}
+							</p>
+						) : (
+							<p className='text-3xl font-semibold'>
+								{reservationTotalPodcast}
+							</p>
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

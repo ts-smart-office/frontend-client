@@ -34,8 +34,8 @@ const FormSignup: FC = () => {
 		await apiCsrfToken()
 		await apiRegister(values)
 			.then(res => {
-				const { id, name, email } = res.data.user
-				handleUser({ id, name, email })
+				const { id, name, email, role } = res.data.user
+				handleUser({ id, name, email, role })
 				toast({
 					description: res.data.message,
 				})

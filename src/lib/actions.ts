@@ -3,8 +3,8 @@ import { UserSession } from '@/utils/types'
 import { cookies } from 'next/headers'
 
 export const handleUser = async (user: UserSession) => {
-	const { id, name, email } = user
-	const sessionUser = { id, name, email }
+	const { id, name, email, role } = user
+	const sessionUser = { id, name, email, role }
 
 	cookies().set('session_user', JSON.stringify(sessionUser), {
 		httpOnly: true,

@@ -24,6 +24,9 @@ import {
 } from '../ui/dialog'
 import RatingUser from './RatingUser'
 import { Rating } from 'react-simple-star-rating'
+import { BookmarkSlashIcon } from '@heroicons/react/24/outline'
+import { Button } from '../ui/button'
+import Link from 'next/link'
 
 type TDataTableProps = {
 	userId: string
@@ -67,9 +70,20 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 
 	if (reservation.length <= 0) {
 		return (
-			<main className='w-full font-urbanist h-[50vh]'>
+			<main className='w-full font-urbanist h-[40vh]'>
 				<section className='h-full px-4 lg:px-0 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col'>
-					Reservation empty
+					<div className='mt-10 w-full flex flex-col justify-center items-center'>
+						<BookmarkSlashIcon className='w-12 h-12 text-greyMuted' />
+						<h1 className='text-lg font-semibold'>No reservation history</h1>
+						<p>Get started by creating a new reservation.</p>
+						<Button
+							className='mt-6 bg-greenBrand font-urbanist h-14 rounded-full w-fit text-base hover:bg-opacity-80 hover:bg-greenBrand'
+							size={'lg'}
+							asChild
+						>
+							<Link href='/#rooms'>Reserve room now</Link>
+						</Button>
+					</div>
 				</section>
 			</main>
 		)
@@ -123,13 +137,18 @@ const DataTable: FC<TDataTableProps> = ({ userId }) => {
 						</TableCell>
 						<TableCell>
 							<Dialog>
-								<DialogTrigger>
+								<DialogTrigger
+									disabled={
+										item.review !== null || item.status === 'canceledByUser'
+									}
+								>
 									<Rating
 										SVGclassName={'inline-block'}
 										size={20}
 										transition
 										onClick={handleRating}
 										allowHover={false}
+										initialValue={item.review?.rating}
 									/>
 								</DialogTrigger>
 								<DialogContent>

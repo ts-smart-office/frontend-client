@@ -3,14 +3,17 @@ import { FC, useEffect, useState } from 'react'
 import Details from '@/components/reservation-details-page/Details'
 import PriceSummary from '@/components/reservation-details-page/PriceSummary'
 import UploadPayment from '@/components/reservation-details-page/UploadPayment'
-import LinkHome from '@/components/room-page/LinkHome'
 import { apiDetailsReservation } from '@/api/reservationApi'
 import { useParams } from 'next/navigation'
-import { IDetailsReservation } from '@/utils/types'
+import { IDetailsReservation, UserSession } from '@/utils/types'
 import Link from 'next/link'
 import { ArrowLeftCircleIcon } from '@heroicons/react/24/outline'
 
-const DetailsReservation: FC = () => {
+type TDetailsReservationProps = {
+	user: UserSession
+}
+
+const DetailsReservation: FC<TDetailsReservationProps> = ({ user }) => {
 	const [details, setDetails] = useState<IDetailsReservation | null>(null)
 	const { id } = useParams()
 	const getDetails = async () => {
@@ -44,12 +47,14 @@ const DetailsReservation: FC = () => {
 			) : (
 				<div className='flex flex-col-reverse xl:flex-row justify-between gap-8 xl:gap-32 mt-12 mb-28'>
 					<div className='w-full xl:w-1/2 flex flex-col gap-11'>
-						<PriceSummary details={details} />
-						<UploadPayment
-							urlImage={details.proof_of_payment_url}
-							expiredTime={details.expires_at}
-							statusReservation={details.status}
-						/>
+						<PriceSummary user={user} details={details} />
+						{user.role.name.includes('External') ? (
+							<UploadPayment
+								urlImage={details.proof_of_payment_url}
+								expiredTime={details.expires_at}
+								statusReservation={details.status}
+							/>
+						) : null}
 					</div>
 					<Details details={details} />
 				</div>

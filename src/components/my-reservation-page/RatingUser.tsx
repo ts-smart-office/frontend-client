@@ -17,25 +17,34 @@ type Segment = {
 
 type TRatingUserProps = {
 	idReservation: string
-	currentRating: number
+	currentRating: number | undefined
 }
 
 const segmentsGood: Segment[] = [
-	{ name: 'Sangat Bersih' },
-	{ name: 'Fasilitas Lengkap' },
-	{ name: 'Pelayanan sangat baik' },
+	{ name: 'Peralatan modern' },
+	{ name: 'Fasilitas lengkap' },
+	{ name: 'Wi-Fi cepat' },
+	{ name: 'Ruangan bersih' },
+	{ name: 'Makanan enak' },
+	{ name: 'Pelayanan profesional' },
 ]
 
 const segmentsMid: Segment[] = [
-	{ name: 'Cukup Bersih' },
-	{ name: 'Fasilitas Cukup' },
-	{ name: 'Pelayanan Cukup' },
+	{ name: 'Fasilitas kurang lengkap' },
+	{ name: 'Wi-Fi kurang stabil' },
+	{ name: 'Ruangan kurang rapi' },
+	{ name: 'Staff kurang ramah' },
+	{ name: 'Makanan kurang menarik' },
+	{ name: 'Porsi makanan kurang' },
 ]
 
 const segmentsLow: Segment[] = [
-	{ name: 'Kurang Bersih' },
-	{ name: 'Fasilitas Kurang' },
-	{ name: 'Pelayanan Kurang' },
+	{ name: 'Fasilitas tidak lengkap' },
+	{ name: 'Peralatan rusak' },
+	{ name: 'Wi-Fi sangat lambat' },
+	{ name: 'Ruangan kotor' },
+	{ name: 'Staff tidak responsif' },
+	{ name: 'Makanan tidak menarik' },
 ]
 
 const RatingUser: FC<TRatingUserProps> = ({ idReservation, currentRating }) => {
@@ -106,7 +115,7 @@ const RatingUser: FC<TRatingUserProps> = ({ idReservation, currentRating }) => {
 				size={50}
 				transition
 			/>
-			<div className='w-full flex gap-2'>
+			<div className='w-full flex flex-wrap gap-2'>
 				{selectedSegment.map(item => (
 					<Checkbox
 						key={item.name}

@@ -10,6 +10,10 @@ export interface UserSession {
 	id: string
 	name: string
 	email: string
+	role: {
+		id: number
+		name: string
+	}
 }
 
 interface FoodItem {
@@ -85,8 +89,10 @@ export interface IDetailsReservation {
 	date: string
 	type_name: string
 	total_persons: number
-	total_price?: number
+	total_price: number
 	room_price: number
+	room_discount: number
+	food_discount: number
 	price: number
 	optional_message: string | null
 	status: string
@@ -157,6 +163,12 @@ export interface IReservationsByUser {
 	status: string
 	start_time: string
 	end_time: string
+	review: {
+		id: string
+		rating: number
+		comment: string
+		tags: string[]
+	} | null
 	status_message: string | null
 	total_persons: number
 	total_price: number

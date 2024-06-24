@@ -49,11 +49,13 @@ type TFormReservationProps = {
 		end_time: string
 	}[]
 	details: IRoomDetails
+	userRole: string
 }
 
 const FormReservation: FC<TFormReservationProps> = ({
 	details,
 	reservedDates,
+	userRole,
 }) => {
 	const { toast } = useToast()
 	const router = useRouter()
@@ -242,123 +244,125 @@ const FormReservation: FC<TFormReservationProps> = ({
 					)}
 				/>
 
-				<div className='flex flex-col'>
-					<p className='text-base lg:text-lg text-greyMuted'>
-						Additional foods (optional)
-					</p>
-					<FormField
-						control={form.control}
-						name='snack'
-						render={({ field }) => (
-							<FormItem>
-								<FormControl>
-									<Accordion type='single' collapsible>
-										<AccordionItem value='item-1'>
-											<AccordionTrigger className='py-2 text-base lg:text-lg hover:no-underline'>
-												<div className='flex w-full justify-between items-center'>
-													Snack
-													<Button
-														type='button'
-														variant='ghost'
-														onClick={() => form.reset()}
-													>
-														Reset
-													</Button>
-												</div>
-											</AccordionTrigger>
-											<AccordionContent className='flex flex-col gap-2'>
-												<RadioGroup
-													onValueChange={field.onChange}
-													className='flex flex-col space-y-1'
-													value={field.value?.toString()}
-												>
-													{snack?.map(item => (
-														<FormItem
-															key={item.id}
-															className='flex space-x-3 space-y-0'
+				{userRole.includes('Eksternal User') && (
+					<div className='flex flex-col'>
+						<p className='text-base lg:text-lg text-greyMuted'>
+							Additional foods (optional)
+						</p>
+						<FormField
+							control={form.control}
+							name='snack'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Accordion type='single' collapsible>
+											<AccordionItem value='item-1'>
+												<AccordionTrigger className='py-2 text-base lg:text-lg hover:no-underline'>
+													<div className='flex w-full justify-between items-center'>
+														Snack
+														<Button
+															type='button'
+															variant='ghost'
+															onClick={() => form.reset()}
 														>
-															<FormControl className='mt-1.5'>
-																<RadioGroupItem value={item.id.toString()} />
-															</FormControl>
-															<FormLabel className='flex flex-col font-normal text-base lg:text-lg'>
-																<p className='font-semibold'>
-																	{item.name} (
-																	{rupiahCurrency.format(item.price)}/person)
-																</p>
-																<ul className='flex gap-1 flex-wrap'>
-																	{item.items.map(item => (
-																		<li key={item.id}>{item.name}, </li>
-																	))}
-																</ul>
-															</FormLabel>
-														</FormItem>
-													))}
-												</RadioGroup>
-											</AccordionContent>
-										</AccordionItem>
-									</Accordion>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name='lunch'
-						render={({ field }) => (
-							<FormItem>
-								<FormControl>
-									<Accordion type='single' collapsible>
-										<AccordionItem value='item-1'>
-											<AccordionTrigger className='py-2 text-base lg:text-lg hover:no-underline'>
-												<div className='flex w-full justify-between items-center'>
-													Lunch
-													<Button
-														type='button'
-														variant='ghost'
-														onClick={() => form.reset()}
+															Reset
+														</Button>
+													</div>
+												</AccordionTrigger>
+												<AccordionContent className='flex flex-col gap-2'>
+													<RadioGroup
+														onValueChange={field.onChange}
+														className='flex flex-col space-y-1'
+														value={field.value?.toString()}
 													>
-														Reset
-													</Button>
-												</div>
-											</AccordionTrigger>
-											<AccordionContent>
-												<RadioGroup
-													onValueChange={field.onChange}
-													className='flex flex-col space-y-1'
-													value={field.value?.toString()}
-												>
-													{lunch?.map(item => (
-														<FormItem
-															key={item.id}
-															className='flex space-x-3 space-y-0'
+														{snack?.map(item => (
+															<FormItem
+																key={item.id}
+																className='flex space-x-3 space-y-0'
+															>
+																<FormControl className='mt-1.5'>
+																	<RadioGroupItem value={item.id.toString()} />
+																</FormControl>
+																<FormLabel className='flex flex-col font-normal text-base lg:text-lg'>
+																	<p className='font-semibold'>
+																		{item.name} (
+																		{rupiahCurrency.format(item.price)}/person)
+																	</p>
+																	<ul className='flex gap-1 flex-wrap'>
+																		{item.items.map(item => (
+																			<li key={item.id}>{item.name}, </li>
+																		))}
+																	</ul>
+																</FormLabel>
+															</FormItem>
+														))}
+													</RadioGroup>
+												</AccordionContent>
+											</AccordionItem>
+										</Accordion>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='lunch'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Accordion type='single' collapsible>
+											<AccordionItem value='item-1'>
+												<AccordionTrigger className='py-2 text-base lg:text-lg hover:no-underline'>
+													<div className='flex w-full justify-between items-center'>
+														Lunch
+														<Button
+															type='button'
+															variant='ghost'
+															onClick={() => form.reset()}
 														>
-															<FormControl className='mt-1.5'>
-																<RadioGroupItem value={item.id.toString()} />
-															</FormControl>
-															<FormLabel className='flex flex-col font-normal text-base lg:text-lg'>
-																<p className='font-semibold'>
-																	{item.name} (
-																	{rupiahCurrency.format(item.price)}/person)
-																</p>
-																<ul className='flex gap-1 flex-wrap'>
-																	{item.items.map(item => (
-																		<li key={item.id}>{item.name}, </li>
-																	))}
-																</ul>
-															</FormLabel>
-														</FormItem>
-													))}
-												</RadioGroup>
-											</AccordionContent>
-										</AccordionItem>
-									</Accordion>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</div>
+															Reset
+														</Button>
+													</div>
+												</AccordionTrigger>
+												<AccordionContent>
+													<RadioGroup
+														onValueChange={field.onChange}
+														className='flex flex-col space-y-1'
+														value={field.value?.toString()}
+													>
+														{lunch?.map(item => (
+															<FormItem
+																key={item.id}
+																className='flex space-x-3 space-y-0'
+															>
+																<FormControl className='mt-1.5'>
+																	<RadioGroupItem value={item.id.toString()} />
+																</FormControl>
+																<FormLabel className='flex flex-col font-normal text-base lg:text-lg'>
+																	<p className='font-semibold'>
+																		{item.name} (
+																		{rupiahCurrency.format(item.price)}/person)
+																	</p>
+																	<ul className='flex gap-1 flex-wrap'>
+																		{item.items.map(item => (
+																			<li key={item.id}>{item.name}, </li>
+																		))}
+																	</ul>
+																</FormLabel>
+															</FormItem>
+														))}
+													</RadioGroup>
+												</AccordionContent>
+											</AccordionItem>
+										</Accordion>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+				)}
 
 				<FormField
 					control={form.control}

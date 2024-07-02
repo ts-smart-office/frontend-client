@@ -9,6 +9,7 @@ export const handleUser = async (user: UserSession) => {
 	cookies().set('session_user', JSON.stringify(sessionUser), {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === 'production',
+		// maxAge: 60,
 		maxAge: 60 * 60 * 24 * 1,
 		path: '/',
 	})

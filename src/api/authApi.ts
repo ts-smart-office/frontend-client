@@ -47,7 +47,7 @@ export const apiMe = () => {
 	return axiosInstance.get('/api/users/me', {
 		headers: {
 			accept: 'application/json',
-			// 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+			'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
 		},
 	})
 }

@@ -49,7 +49,8 @@ const segmentsLow: Segment[] = [
 
 const RatingUser: FC<TRatingUserProps> = ({ idReservation, currentRating }) => {
 	const { toast } = useToast()
-	const [ratingValue, setRatingValue] = useState<number>(currentRating)
+	const initialRating = currentRating !== undefined ? currentRating : 0
+	const [ratingValue, setRatingValue] = useState<number>(initialRating)
 	const [selectedItems, setSelectedItems] = useState<Segment[]>([])
 	const [selectedSegment, setSelectedSegment] = useState<Segment[]>([])
 

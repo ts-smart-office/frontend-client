@@ -214,7 +214,10 @@ const FormReservation: FC<TFormReservationProps> = ({
 									className='flex flex-col'
 								>
 									{details.reservation_options.map(item => (
-										<FormItem className='flex items-center space-x-3'>
+										<FormItem
+											key={item.id}
+											className='flex items-center space-x-3'
+										>
 											<FormControl>
 												<RadioGroupItem
 													value={item.id.toString()}

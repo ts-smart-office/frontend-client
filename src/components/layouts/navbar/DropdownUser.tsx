@@ -30,6 +30,7 @@ const DropdownUser: FC<TDropdownUserProps> = ({ userSession }) => {
 		}
 		await deleteUser()
 	}
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>

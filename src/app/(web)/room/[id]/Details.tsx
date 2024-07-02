@@ -69,7 +69,7 @@ const RoomPage: FC<TRoomPageProps> = ({ userSession }) => {
 								</h1>
 								{!details.name.includes('Podcast') ? (
 									<FormReservation
-										userRole={userSession.role.name}
+										userRole={userSession?.role?.name}
 										details={details}
 										reservedDates={details.reserved_dates}
 									/>

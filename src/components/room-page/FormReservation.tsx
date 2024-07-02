@@ -66,6 +66,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 		},
 	})
 	const [loadBtn, setLoadBtn] = useState<boolean>(false)
+	const [selectedDate, setSelectedDate] = useState<Date | undefined>()
 
 	const onSubmit = async (values: z.infer<typeof reservationSchema>) => {
 		const bodyReservation: BodyReservation = {
@@ -164,13 +165,11 @@ const FormReservation: FC<TFormReservationProps> = ({
 										<Calendar
 											mode='single'
 											selected={field.value}
-											onSelect={field.onChange}
-											disabled={date =>
-												date < new Date() ||
-												reservedDates.some(reservedDate =>
-													isSameDay(new Date(date), new Date(reservedDate.date))
-												)
-											}
+											onSelect={date => {
+												field.onChange(date)
+												setSelectedDate(date)
+											}}
+											disabled={date => date < new Date()}
 											initialFocus
 										/>
 									</PopoverContent>
@@ -220,6 +219,21 @@ const FormReservation: FC<TFormReservationProps> = ({
 												<RadioGroupItem
 													value={item.id.toString()}
 													className='mt-2'
+													disabled={
+														selectedDate
+															? reservedDates.some(
+																	reservedDate =>
+																		isSameDay(
+																			new Date(selectedDate),
+																			new Date(reservedDate.date)
+																		) &&
+																		item.reservation_type.start_time >=
+																			reservedDate.start_time &&
+																		item.reservation_type.end_time <=
+																			reservedDate.end_time
+															  )
+															: true
+													}
 												/>
 											</FormControl>
 											<FormLabel className='font-normal text-base lg:text-lg flex flex-col'>
@@ -244,7 +258,9 @@ const FormReservation: FC<TFormReservationProps> = ({
 					)}
 				/>
 
-				{userRole.includes('Eksternal User') && (
+				{(userRole === 'External User' ||
+					!userRole ||
+					(Array.isArray(userRole) && !userRole.includes('Internal'))) && (
 					<div className='flex flex-col'>
 						<p className='text-base lg:text-lg text-greyMuted'>
 							Additional foods (optional)

@@ -40,6 +40,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '../ui/select'
+import { ToastAction } from '../ui/toast'
 
 type TFormPodcastProps = {
 	reservedDates: {
@@ -60,13 +61,82 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 		},
 	})
 	const [loadBtn, setLoadBtn] = useState<boolean>(false)
+	const [selectedDate, setSelectedDate] = useState<Date | undefined>()
+	const [disabledTimes, setDisabledTimes] = useState<string[]>([])
+
+	const time = [
+		{ value: '08:00' },
+		{ value: '09:00' },
+		{ value: '10:00' },
+		{ value: '11:00' },
+		{ value: '12:00' },
+		{ value: '13:00' },
+		{ value: '14:00' },
+		{ value: '15:00' },
+		{ value: '16:00' },
+		{ value: '17:00' },
+	]
+
+	useEffect(() => {
+		const updateDisabledTimes = () => {
+			if (selectedDate) {
+				const formattedSelectedDate = moment(selectedDate).format('YYYY-MM-DD')
+				const disabledTimes: string[] = []
+
+				time.forEach(item => {
+					const timeValue = item.value
+					const timeInRange = reservedDates.some(slot => {
+						const startTime = slot.start_time
+						const endTime = slot.end_time
+						return (
+							timeValue >= startTime &&
+							timeValue < endTime &&
+							isSameDay(new Date(slot.date), selectedDate)
+						)
+					})
+
+					if (timeInRange) {
+						disabledTimes.push(timeValue)
+					}
+				})
+
+				setDisabledTimes(disabledTimes)
+			}
+		}
+
+		updateDisabledTimes()
+	}, [selectedDate, reservedDates])
+
+	const getAvailableTimeSlots = () => {
+		const availableTime: any[] = []
+
+		time.forEach(item => {
+			const timeValue = item.value
+			let timeAvailable = true
+
+			reservedDates.forEach(slot => {
+				const startTime = slot.start_time
+				const endTime = slot.end_time
+
+				if (timeValue >= startTime && timeValue < endTime) {
+					timeAvailable = false
+				}
+			})
+
+			if (timeAvailable) {
+				availableTime.push(item.value)
+			}
+		})
+
+		return availableTime
+	}
 
 	const onSubmit = async (values: z.infer<typeof reservationPodcastSchema>) => {
 		const bodyReservation: any = {
 			room_id: details.id,
 			date: moment(values.date).format('YYYY-MM-DD'),
 			option_id: values.type,
-			start_time: moment(values.start_time, 'H:mm').format('H:mm'),
+			start_time: values.start_time,
 			duration_in_hours: values.duration_in_hours,
 			optional_message: values.optional_message,
 		}
@@ -76,14 +146,25 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 		await apiCreateReservation(bodyReservation)
 			.then(res => {
 				toast({
-					description: res.data.message,
+					title: res.data.message,
 				})
 				return router.push(`/myreservation/${res.data.data.id}`)
 			})
 			.catch(error => {
 				if (error.response) {
+					const availableTimeSlots = getAvailableTimeSlots().join(', ')
 					toast({
-						description: error.response.data.message,
+						title: error.response.data.message,
+						description: `${
+							availableTimeSlots
+								? `Waktu kosong tersedia: ${availableTimeSlots}. Atau hubungi customer service kami`
+								: ``
+						}`,
+						action: (
+							<ToastAction altText='Hubungi'>
+								<a href={'/'}>Hubungi</a>
+							</ToastAction>
+						),
 					})
 				}
 			})
@@ -91,17 +172,6 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 				setLoadBtn(false)
 			})
 	}
-
-	const time = [
-		{ value: '08.00' },
-		{ value: '09.00' },
-		{ value: '10.00' },
-		{ value: '11.00' },
-		{ value: '12.00' },
-		{ value: '13.00' },
-		{ value: '14.00' },
-		{ value: '15.00' },
-	]
 
 	return (
 		<Form {...form}>
@@ -141,7 +211,10 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 										<Calendar
 											mode='single'
 											selected={field.value}
-											onSelect={field.onChange}
+											onSelect={date => {
+												setSelectedDate(date)
+												field.onChange(date)
+											}}
 											disabled={date => {
 												const today = new Date()
 												const nextWeek = new Date(today)
@@ -185,7 +258,12 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 								</FormControl>
 								<SelectContent>
 									{time.map(item => (
-										<SelectItem key={item.value} value={item.value}>
+										<SelectItem
+											// disabled={!getAvailableTimeSlots().includes(item.value)}
+											disabled={disabledTimes.includes(item.value)}
+											key={item.value}
+											value={item.value}
+										>
 											{item.value}
 										</SelectItem>
 									))}

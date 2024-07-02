@@ -169,7 +169,16 @@ const FormReservation: FC<TFormReservationProps> = ({
 												field.onChange(date)
 												setSelectedDate(date)
 											}}
-											disabled={date => date < new Date()}
+											disabled={date =>
+												date < new Date() ||
+												reservedDates.some(reservedDate => {
+													const reservedDateTime = new Date(reservedDate.date)
+													return (
+														isSameDay(date, reservedDateTime) &&
+														reservedDate.end_time === '17:00'
+													)
+												})
+											}
 											initialFocus
 										/>
 									</PopoverContent>

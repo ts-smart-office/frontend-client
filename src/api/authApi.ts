@@ -25,11 +25,29 @@ export const apiRegister = (data: z.infer<typeof signupSchema>) => {
 	})
 }
 
+export const apiRegisterGoogle = () => {
+	return axiosInstance.get('/api/auth/google/redirect', {
+		headers: {
+			accept: 'application/json',
+			'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+		},
+	})
+}
+
 export const apiLogout = () => {
 	return axiosInstance.delete('/api/session', {
 		headers: {
 			accept: 'application/json',
 			'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+		},
+	})
+}
+
+export const apiMe = () => {
+	return axiosInstance.get('/api/users/me', {
+		headers: {
+			accept: 'application/json',
+			// 'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
 		},
 	})
 }

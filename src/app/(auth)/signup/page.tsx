@@ -20,7 +20,7 @@ const page: FC = () => {
 					</div>
 				</div>
 				<div className='col-span-4 md:col-span-5 flex items-center'>
-					<div className='w-full flex flex-col gap-6 lg:gap-16 lg:px-10'>
+					<div className='w-full flex flex-col gap-6 lg:gap-2 lg:px-10'>
 						<h2 className='font-semibold text-5xl text-center'>
 							<span className='text-greenBrand'>Smart</span>Office.
 						</h2>

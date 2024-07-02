@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '../ui/button'
 import { signupSchema } from '@/utils/form-schema'
 import Link from 'next/link'
-import { apiCsrfToken, apiRegister } from '@/api/authApi'
+import { apiCsrfToken, apiRegister, apiRegisterGoogle } from '@/api/authApi'
 import { useToast } from '../ui/use-toast'
 import { useRouter } from 'next/navigation'
 import { handleUser } from '@/lib/actions'
@@ -51,6 +51,10 @@ const FormSignup: FC = () => {
 				}
 			})
 			.finally(() => setLoadBtn(false))
+	}
+
+	const redirectGoogle = () => {
+		window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/auth/google/redirect`
 	}
 
 	return (
@@ -166,6 +170,14 @@ const FormSignup: FC = () => {
 						</FormItem>
 					)}
 				/>
+				<p className='text-center'>Or</p>
+				<Button
+					type='button'
+					onClick={redirectGoogle}
+					className='text-darkColor bg-greyMuted/20 rounded-full w-full py-6 text-lg hover:bg-opacity-80 hover:bg-greyMuted/20'
+				>
+					Google
+				</Button>
 				<div className='lg:text-lg'>
 					Already have an account?{' '}
 					<span className='font-medium text-greenBrand'>

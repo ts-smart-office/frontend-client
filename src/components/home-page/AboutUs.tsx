@@ -22,8 +22,8 @@ const AboutUs: FC = () => {
 				</h1>
 				<p className='text-greyMuted text-lg max-w-[700px] text-center'>
 					Education is the path to building a civilization. Introducing Tiga
-					Serangkai SMART Office, a milestone in Tiga Serangkai's journey
-					towards staying relevant.
+					Serangkai SMART Office, a milestone in Tiga Serangkai journey towards
+					staying relevant.
 				</p>
 			</div>
 			<div className='w-full grid grid-cols-12 gap-4 lg:gap-8'>

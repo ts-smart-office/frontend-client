@@ -15,10 +15,11 @@ import { Input } from '@/components/ui/input'
 import { Button } from '../ui/button'
 import { signupSchema } from '@/utils/form-schema'
 import Link from 'next/link'
-import { apiCsrfToken, apiRegister, apiRegisterGoogle } from '@/api/authApi'
+import { apiCsrfToken, apiRegister } from '@/api/authApi'
 import { useToast } from '../ui/use-toast'
 import { useRouter } from 'next/navigation'
 import { handleUser } from '@/lib/actions'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 const FormSignup: FC = () => {
 	const form = useForm<z.infer<typeof signupSchema>>({
@@ -28,29 +29,36 @@ const FormSignup: FC = () => {
 	const router = useRouter()
 	const { toast } = useToast()
 	const [loadBtn, setLoadBtn] = useState<boolean>(false)
+	const [captchaVerify, setCaptchaVerify] = useState<string | null>()
 
 	const onSubmit = async (values: z.infer<typeof signupSchema>) => {
-		setLoadBtn(true)
-		await apiCsrfToken()
-		await apiRegister(values)
-			.then(res => {
-				const { id, name, email, role } = res.data.user
-				handleUser({ id, name, email, role })
-				toast({
-					description: res.data.message,
-				})
-				setTimeout(function () {
-					router.push('/')
-				}, 1000)
-			})
-			.catch(error => {
-				if (error.response) {
+		if (captchaVerify) {
+			setLoadBtn(true)
+			await apiCsrfToken()
+			await apiRegister(values)
+				.then(res => {
+					const { id, name, email, role } = res.data.user
+					handleUser({ id, name, email, role })
 					toast({
-						description: error.response.data.message,
+						description: res.data.message,
 					})
-				}
+					setTimeout(function () {
+						router.push('/')
+					}, 1000)
+				})
+				.catch(error => {
+					if (error.response) {
+						toast({
+							description: error.response.data.message,
+						})
+					}
+				})
+				.finally(() => setLoadBtn(false))
+		} else {
+			toast({
+				description: 'Please verify youre human!',
 			})
-			.finally(() => setLoadBtn(false))
+		}
 	}
 
 	const redirectGoogle = () => {
@@ -184,7 +192,12 @@ const FormSignup: FC = () => {
 						<Link href='/signin'>Sign in</Link>
 					</span>
 				</div>
-				<div className='flex justify-center pt-4'>
+				<div className='flex items-center gap-8 pt-4'>
+					<ReCAPTCHA
+						sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+						className='mx-auto'
+						onChange={setCaptchaVerify}
+					/>
 					<Button
 						type='submit'
 						disabled={loadBtn}

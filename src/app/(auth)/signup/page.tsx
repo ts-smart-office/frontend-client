@@ -24,8 +24,8 @@ const page: FC = () => {
 						<h2 className='font-semibold text-5xl text-center'>
 							<span className='text-greenBrand'>Smart</span>Office.
 						</h2>
-						<div className='flex flex-col lg:gap-8'>
-							<p className='font-medium text-2xl lg:text-4xl text-center'>
+						<div className='flex flex-col lg:gap-2'>
+							<p className='font-medium text-2xl lg:text-3xl text-center'>
 								Create new account
 							</p>
 							<FormSignup />

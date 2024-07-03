@@ -32,10 +32,19 @@ const FormSignup: FC = () => {
 	const [captchaVerify, setCaptchaVerify] = useState<string | null>()
 
 	const onSubmit = async (values: z.infer<typeof signupSchema>) => {
+		const bodyRegister = {
+			name: values.name,
+			email: values.email,
+			company: values.company,
+			phone: values.phone,
+			password: values.password,
+			password_confirmation: values.password_confirmation,
+			'g-recaptcha-response': captchaVerify,
+		}
 		if (captchaVerify) {
 			setLoadBtn(true)
 			await apiCsrfToken()
-			await apiRegister(values)
+			await apiRegister(bodyRegister)
 				.then(res => {
 					const { id, name, email, role } = res.data.user
 					handleUser({ id, name, email, role })

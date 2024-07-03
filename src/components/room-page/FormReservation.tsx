@@ -175,6 +175,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 													const reservedDateTime = new Date(reservedDate.date)
 													return (
 														isSameDay(date, reservedDateTime) &&
+														reservedDate.start_time === '08:00' &&
 														reservedDate.end_time === '17:00'
 													)
 												})
@@ -239,10 +240,10 @@ const FormReservation: FC<TFormReservationProps> = ({
 																			new Date(selectedDate),
 																			new Date(reservedDate.date)
 																		) &&
-																		item.reservation_type.start_time >=
-																			reservedDate.start_time &&
-																		item.reservation_type.end_time <=
-																			reservedDate.end_time
+																		item.reservation_type.start_time <=
+																			reservedDate.end_time &&
+																		item.reservation_type.end_time >=
+																			reservedDate.start_time
 															  )
 															: true
 													}

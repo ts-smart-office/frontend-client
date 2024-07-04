@@ -27,6 +27,11 @@ export const uploadPaymentFile = z.object({
 	attachment: z.any(),
 })
 
+export const cancelReservationSchema = z.object({
+	reason: z.string(),
+	details: z.string().optional(),
+})
+
 export const reservationSchema = z.object({
 	room_id: z.number(),
 	date: z.coerce.date(),
@@ -47,7 +52,5 @@ export const reservationPodcastSchema = z.object({
 })
 
 export const ratingUser = z.object({
-	comment: z.string().min(4, {
-		message: 'Username must be at least 4 characters.',
-	}),
+	comment: z.string().optional(),
 })

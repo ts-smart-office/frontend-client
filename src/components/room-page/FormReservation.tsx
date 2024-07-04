@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { reservationSchema } from '@/utils/form-schema'
-import { format, isSameDay } from 'date-fns'
+import { format, isSameDay, isWeekend } from 'date-fns'
 import {
 	Form,
 	FormControl,
@@ -127,6 +127,16 @@ const FormReservation: FC<TFormReservationProps> = ({
 		allFoods()
 	}, [])
 
+	const selectedDatesFull: Date[] = []
+	for (const reservedDate of reservedDates) {
+		if (
+			reservedDate.start_time === '08:00' &&
+			reservedDate.end_time === '17:00'
+		) {
+			selectedDatesFull.push(new Date(reservedDate.date))
+		}
+	}
+
 	return (
 		<Form {...form}>
 			<form
@@ -171,6 +181,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 											}}
 											disabled={date =>
 												date < new Date() ||
+												isWeekend(date) ||
 												reservedDates.some(reservedDate => {
 													const reservedDateTime = new Date(reservedDate.date)
 													return (
@@ -180,6 +191,11 @@ const FormReservation: FC<TFormReservationProps> = ({
 													)
 												})
 											}
+											modifiers={{ selectedDatesFull: selectedDatesFull }}
+											modifiersClassNames={{
+												selectedDatesFull:
+													'bg-rose-700 text opacity-100 text-white',
+											}}
 											initialFocus
 										/>
 									</PopoverContent>

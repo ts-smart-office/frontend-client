@@ -85,10 +85,21 @@ const RatingUser: FC<TRatingUserProps> = ({ idReservation, currentRating }) => {
 	})
 
 	async function onSubmit(data: z.infer<typeof ratingUser>) {
-		const bodyRating = {
-			rating: ratingValue,
-			comment: data.comment,
-			tags: selectedItems.map(item => item.name),
+		let bodyRating
+		if (data.comment) {
+			bodyRating = {
+				rating: ratingValue,
+				comment: data.comment,
+				tags: selectedItems.map(item => item.name),
+			}
+		}
+
+		if (!data.comment) {
+			bodyRating = {
+				rating: ratingValue,
+				comment: null,
+				tags: selectedItems.map(item => item.name),
+			}
 		}
 
 		await apiReviewReservation(idReservation!, bodyRating)

@@ -71,7 +71,7 @@ const RoomCard: FC<TRoomCardProps> = ({
 									className='text-xl md:text-2xl font-semibold text-greenBrand'
 								>
 									{rupiahCurrency.format(item.price)}
-									<span className='text-xl text-greyMuted font-normal'>
+									<span className='text-lg text-greyMuted font-normal'>
 										/
 										{item.reservation_type.name === 'Podcast Streaming'
 											? 'Stream'

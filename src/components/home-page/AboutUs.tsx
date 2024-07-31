@@ -7,8 +7,10 @@ const AboutUs: FC = () => {
 	const galleries = [
 		{ id: 1, image: '/library.jpg' },
 		{ id: 2, image: '/cafe.jpg' },
-		{ id: 3, image: '/library-02.jpg' },
+		// { id: 3, image: '/library-02.jpg' },
+		{ id: 3, image: '/studio.jpg' },
 		{ id: 4, image: '/gym.jpg' },
+		{ id: 5, image: '/open-room.jpg' },
 	]
 
 	const [displayImage, setDisplayImage] = useState<string>(galleries[0].image)
@@ -52,7 +54,7 @@ const AboutUs: FC = () => {
 								className='absolute w-full h-full object-cover rounded-2xl'
 							/>
 						</div>
-						<div className='flex-1 grid grid-cols-4 gap-2 md:gap-4'>
+						<div className='flex-1 grid grid-cols-5 gap-2 md:gap-4'>
 							{galleries.map(item => (
 								<div
 									key={item.id}

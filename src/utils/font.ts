@@ -1,11 +1,11 @@
-import { Questrial, Urbanist } from 'next/font/google'
+import { Questrial, Urbanist, Manrope, Roboto } from 'next/font/google'
 
-export const fontUrbanist = Urbanist({
+export const fontUrbanist = Manrope({
 	subsets: ['latin'],
 	variable: '--font-urbanist',
 })
 
-export const fontQuestrial = Questrial({
+export const fontQuestrial = Roboto({
 	subsets: ['latin'],
 	weight: '400',
 	variable: '--font-questrial',

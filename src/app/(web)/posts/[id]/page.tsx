@@ -25,8 +25,8 @@ const page = ({ params }: { params: { id: string } }) => {
 		<main className='w-full font-urbanist'>
 			<section className='px-4 lg:px-20 2xl:max-w-[1440px] 2xl:mx-auto flex flex-col justify-center'>
 				<LinkHome />
-				<h1 className='font-semibold text-5xl'>{detailPost?.title}</h1>
-				<div className='relative h-32 md:h-[460px] rounded-lg md:mt-9'>
+				<h1 className='font-bold text-5xl leading-snug'>{detailPost?.title}</h1>
+				<div className='relative h-32 md:h-[540px] rounded-lg md:mt-9'>
 					<Image
 						src={detailPost?.image}
 						alt='banner-1'

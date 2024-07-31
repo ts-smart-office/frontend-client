@@ -41,14 +41,14 @@ const NewsSection: FC = () => {
 					/>
 				))}
 			</div>
-			{/* <Button
+			<Button
 				asChild
 				variant={'outline'}
 				className='border-dark rounded-full hover:bg-greenBrand hover:border-greenBrand font-semibold hover:text-[#f9f9f9] transition-all duration-300 text-base h-14'
 				size={'lg'}
 			>
 				<Link href={'/news'}>View all news</Link>
-			</Button> */}
+			</Button>
 		</div>
 	)
 }

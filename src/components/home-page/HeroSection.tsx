@@ -7,28 +7,28 @@ const HeroSection: FC = () => {
 		<div className='w-full flex flex-col justify-center gap-10 sm:gap-14'>
 			<div className='w-full flex flex-col lg:flex-row lg:justify-between lg:items-end pt-24 lg:pt-[88px] lg:py-6 gap-4'>
 				<h1 className='text-4xl leading-snug md:text-6xl md:leading-snug lg:text-[44px] lg:leading-[64px] xl:text-6xl xl:leading-snug font-semibold font-urbanist'>
-					Digital Workspace, <br />
-					Enhanced <span className='text-greenBrand'>Productivity</span>
+					Ruang Kerja Digital, <br />
+					Untuk Lompatan <span className='text-greenBrand'>Produktivitas</span>
 				</h1>
 				<div className='flex flex-col max-w-96 gap-4 xl:gap-11'>
 					<p className='font-questrial text-base text-muted-foreground'>
-						Enhance team collaboration with our rooms anytime and anywhere for
-						efficient communication.
+						Maksimalkan kolaborasi tim Anda dengan ruangan kami kapanpun dan di
+						manapun dengan komunikasi yang efisien.
 					</p>
 					<Button
 						className='bg-greenBrand font-urbanist h-14 rounded-full w-2/3 text-base hover:bg-opacity-80 hover:bg-greenBrand'
 						size={'lg'}
 					>
-						Reserve room now
+						Pesan Ruangan Sekarang
 					</Button>
 				</div>
 			</div>
 			<div className='flex flex-col gap-2'>
 				<div className='w-fit flex items-center justify-center gap-2 font-urbanist text-base font-medium p-2 border border-greyMuted rounded-full'>
 					<div className='bg-greenBrand py-1 px-3 text-white rounded-full'>
-						New
+						Baru
 					</div>
-					<div className='text-greyMuted'>Modern buildings</div>
+					<div className='text-greyMuted'>Bangunan Bergaya Modern </div>
 				</div>
 				<div className='w-full grid grid-cols-12 gap-3 lg:gap-6'>
 					<div className='col-span-5 xl:col-span-3'>

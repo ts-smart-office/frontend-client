@@ -9,7 +9,7 @@ const Footer: FC = () => {
 		<div className='w-full flex flex-col font-urbanist pt-20'>
 			<div className='w-full flex flex-col max-md:gap-8 md:flex-row justify-between pb-7'>
 				<h1 className='font-semibold text-2xl md:text-4xl'>
-					Smart Office <br /> Building Futures
+					Tiga Serangkai <br /> SMART Office
 				</h1>
 				<div className='flex gap-8 max-md:justify-between md:gap-32'>
 					<div className='flex flex-col gap-2'>
@@ -25,7 +25,7 @@ const Footer: FC = () => {
 						))}
 					</div>
 					<div className='flex flex-col gap-2'>
-						<p className='font-semibold text-xl mb-2'>Our community</p>
+						<p className='font-semibold text-xl mb-2'>Komunitas Kami</p>
 						<div className='flex gap-4'>
 							<Instagram />
 							<Facebook />

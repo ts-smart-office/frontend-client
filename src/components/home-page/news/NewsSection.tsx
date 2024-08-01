@@ -29,7 +29,7 @@ const NewsSection: FC = () => {
 	return (
 		<div className='w-full flex flex-col justify-center items-center font-urbanist py-16 lg:py-32 gap-10'>
 			<h1 className='text-3xl sm:text-[40px] leading-tight font-semibold text-center'>
-				Latest News from Tiga Serangkai
+				Berita Terbaru dari Tiga Serangkai
 			</h1>
 			<div className='w-full grid grid-cols-12 gap-4 lg:gap-8'>
 				{posts.map(post => (
@@ -47,7 +47,7 @@ const NewsSection: FC = () => {
 				className='border-dark rounded-full hover:bg-greenBrand hover:border-greenBrand font-semibold hover:text-[#f9f9f9] transition-all duration-300 text-base h-14'
 				size={'lg'}
 			>
-				<Link href={'/news'}>View all news</Link>
+				<Link href={'/news'}>Lihat semua berita</Link>
 			</Button>
 		</div>
 	)

@@ -54,9 +54,9 @@ const RoomPage: FC<TRoomPageProps> = ({ userSession }) => {
 					<div className='col-span-4 sm:col-span-7 xl:col-span-8'>
 						<div className='w-fit flex items-center justify-center gap-2 font-urbanist text-base font-medium p-2 border border-greyMuted rounded-full'>
 							<div className='bg-greenBrand py-1 px-3 text-white rounded-full'>
-								New
+								Baru
 							</div>
-							<div className='text-greyMuted'>Modern buildings</div>
+							<div className='text-greyMuted'>Bangunan Bergaya Modern</div>
 						</div>
 						<RoomImages details={details} />
 						<RoomDetails details={details} />
@@ -65,7 +65,7 @@ const RoomPage: FC<TRoomPageProps> = ({ userSession }) => {
 						<div className='w-full p-6 rounded-xl bg-white'>
 							<div className='flex flex-col gap-8'>
 								<h1 className='text-xl lg:text-2xl xl:text-3xl font-semibold'>
-									Reservation Information
+									Informasi Reservasi
 								</h1>
 								{!details.name.includes('Podcast') ? (
 									<FormReservation

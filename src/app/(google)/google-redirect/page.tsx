@@ -1,26 +1,13 @@
 'use client'
-import React, { useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { handleUser } from '@/lib/actions'
+import React, { Suspense } from 'react'
+import GoogleCallbackPage from './googleCallback'
 
-const GoogleCallbackPage = () => {
-	const router = useRouter()
-	const searchParams = useSearchParams()
-
-	const user = searchParams.get('user')
-
-	useEffect(() => {
-		if (user) {
-			handleUser(JSON.parse(user))
-			router.push('/')
-		}
-	}, [router])
-
+const GooglePage = () => {
 	return (
-		<div>
-			<p>Logging you in...</p>
-		</div>
+		<Suspense>
+			<GoogleCallbackPage />
+		</Suspense>
 	)
 }
 
-export default GoogleCallbackPage
+export default GooglePage

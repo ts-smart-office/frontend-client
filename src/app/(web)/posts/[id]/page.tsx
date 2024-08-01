@@ -4,7 +4,7 @@ import LinkHome from '@/components/room-page/LinkHome'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
-const page = ({ params }: { params: { id: string } }) => {
+const Page = ({ params }: { params: { id: string } }) => {
 	const [detailPost, setDetailPost] = useState<any | null>(null)
 
 	const fetchDetailPost = async () => {
@@ -44,4 +44,4 @@ const page = ({ params }: { params: { id: string } }) => {
 	)
 }
 
-export default page
+export default Page

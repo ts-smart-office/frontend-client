@@ -34,6 +34,7 @@ const NewsSection: FC = () => {
 			<div className='w-full grid grid-cols-12 gap-4 lg:gap-8'>
 				{posts.map(post => (
 					<NewsCard
+						key={post.id}
 						newsType={post.category}
 						newsTitle={post.title}
 						newsImage={post.image}

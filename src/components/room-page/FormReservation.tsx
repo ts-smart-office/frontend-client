@@ -128,12 +128,27 @@ const FormReservation: FC<TFormReservationProps> = ({
 	}, [])
 
 	const selectedDatesFull: Date[] = []
+
+	const isFullDayCovered = (date: string) => {
+		const morningReservation = reservedDates.some(
+			r => r.date === date && r.start_time === '08:00' && r.end_time === '12:00'
+		)
+		const afternoonReservation = reservedDates.some(
+			r => r.date === date && r.start_time === '13:00' && r.end_time === '17:00'
+		)
+		return morningReservation && afternoonReservation
+	}
+
 	for (const reservedDate of reservedDates) {
 		if (
-			reservedDate.start_time === '08:00' &&
-			reservedDate.end_time === '17:00'
+			(reservedDate.start_time === '08:00' &&
+				reservedDate.end_time === '17:00') ||
+			isFullDayCovered(reservedDate.date)
 		) {
-			selectedDatesFull.push(new Date(reservedDate.date))
+			const dateObj = new Date(reservedDate.date)
+			if (!selectedDatesFull.some(d => isSameDay(d, dateObj))) {
+				selectedDatesFull.push(dateObj)
+			}
 		}
 	}
 
@@ -179,22 +194,52 @@ const FormReservation: FC<TFormReservationProps> = ({
 												field.onChange(date)
 												setSelectedDate(date)
 											}}
-											disabled={date =>
-												date < new Date() ||
-												isWeekend(date) ||
-												reservedDates.some(reservedDate => {
-													const reservedDateTime = new Date(reservedDate.date)
-													return (
-														isSameDay(date, reservedDateTime) &&
-														reservedDate.start_time === '08:00' &&
-														reservedDate.end_time === '17:00'
-													)
-												})
-											}
+											// disabled={date =>
+											// 	date < new Date() ||
+											// 	isWeekend(date) ||
+											// 	reservedDates.some(reservedDate => {
+											// 		const reservedDateTime = new Date(reservedDate.date)
+											// 		return (
+											// 			isSameDay(date, reservedDateTime) &&
+											// 			reservedDate.start_time === '08:00' &&
+											// 			reservedDate.end_time === '17:00'
+											// 		)
+											// 	})
+											// }
+											disabled={date => {
+												if (date < new Date() || isWeekend(date)) {
+													return true
+												}
+
+												const isDateFullyReserved = reservedDates.some(
+													reservedDate => {
+														const reservedDateTime = new Date(reservedDate.date)
+														return (
+															isSameDay(date, reservedDateTime) &&
+															((reservedDate.start_time === '08:00' &&
+																reservedDate.end_time === '17:00') ||
+																(reservedDates.some(
+																	r =>
+																		isSameDay(date, new Date(r.date)) &&
+																		r.start_time === '08:00' &&
+																		r.end_time === '12:00'
+																) &&
+																	reservedDates.some(
+																		r =>
+																			isSameDay(date, new Date(r.date)) &&
+																			r.start_time === '13:00' &&
+																			r.end_time === '17:00'
+																	)))
+														)
+													}
+												)
+
+												return isDateFullyReserved
+											}}
 											modifiers={{ selectedDatesFull: selectedDatesFull }}
 											modifiersClassNames={{
 												selectedDatesFull:
-													'bg-rose-700 text opacity-100 text-white',
+													'bg-rose-700 bg-opacity-70 text-white',
 											}}
 											initialFocus
 										/>

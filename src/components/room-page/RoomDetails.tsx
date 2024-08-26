@@ -13,11 +13,11 @@ const RoomDetails: FC<TRoomDetails> = ({ details }) => {
 	return (
 		<>
 			<div className='flex flex-col gap-4 mt-10'>
-				<h2 className='font-semibold text-4xl'>About</h2>
-				<p className='text-base text-greyMuted'>{details.description}</p>
+				<h2 className='font-semibold text-4xl'>Tentang Ruangan</h2>
+				<p className='text-xl text-greyMuted'>{details.description}</p>
 			</div>
 			<div className='flex flex-col gap-4 mt-10'>
-				<h2 className='font-semibold text-4xl'>Facilities</h2>
+				<h2 className='font-semibold text-4xl'>Fasilitas</h2>
 				<div className='flex flex-wrap gap-2 sm:gap-4'>
 					{details.facilities.map((item: any, idx: number) => (
 						<Badge

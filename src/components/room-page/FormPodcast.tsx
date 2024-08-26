@@ -185,7 +185,7 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 					render={({ field }) => (
 						<FormItem className='flex flex-col'>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Reservation date
+								Tanggal Reservasi
 							</FormLabel>
 							<FormControl>
 								<Popover>
@@ -201,7 +201,7 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 												{field.value ? (
 													format(field.value, 'PPP')
 												) : (
-													<span>Pick a date</span>
+													<span>Pilih Tanggal</span>
 												)}
 												<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
 											</Button>
@@ -243,7 +243,7 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Select start time
+								Pilih Waktu Mulai
 							</FormLabel>
 							<Select onValueChange={field.onChange} defaultValue={field.value}>
 								<FormControl>
@@ -279,11 +279,11 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Duration
+								Pilih Durasi
 							</FormLabel>
 							<FormControl>
 								<Input
-									placeholder='Duration in hours'
+									placeholder='Pilih Durasi'
 									type='number'
 									{...field}
 									className='border border-greyMuted text-base lg:text-lg lg:py-6 px-4 rounded-full'
@@ -299,7 +299,7 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 					render={({ field }) => (
 						<FormItem className='space-y-2'>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Reservation type
+								Tipe Reservasi
 							</FormLabel>
 							<FormControl>
 								<RadioGroup
@@ -346,11 +346,11 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Message (optional)
+								Pesan Anda (optional)
 							</FormLabel>
 							<FormControl>
 								<Textarea
-									placeholder='Any message?'
+									placeholder='Tuliskan pesan anda'
 									className='border border-greyMuted rounded-xl text-base lg:text-lg px-4 resize-none'
 									{...field}
 								/>
@@ -368,7 +368,7 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 							loadBtn ? 'opacity-50 cursor-not-allowed' : ''
 						}`}
 					>
-						{loadBtn ? 'Making reservation...' : 'Make reservation'}
+						{loadBtn ? 'Memesan...' : 'Pesan sekarang'}
 					</Button>
 				</div>
 			</form>

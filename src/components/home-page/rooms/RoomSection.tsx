@@ -25,10 +25,10 @@ const RoomSection: FC = () => {
 		<div className='w-full 2xl:max-w-[1600px] 2xl:mx-auto flex flex-col justify-center items-center font-urbanist gap-10 py-12 lg:py-32 lg:px-20'>
 			<div className='flex flex-col justify-center items-center gap-4 max-md:px-4'>
 				<h1 className='text-3xl sm:text-[40px] leading-tight font-semibold text-center'>
-					Explore Our Rooms
+					Jelajahi Tiga Serangkai SMART Office
 				</h1>
 				<p className='text-greyMuted text-lg max-w-[700px] text-center'>
-					Elevating Your Meeting Experience with Tiga Serangkai
+					Maksimalkan Produktifitas dan Pengalaman Anda bersama Tiga Serangkai
 				</p>
 			</div>
 			{rooms.length <= 0 ? (

@@ -1,8 +1,8 @@
 export const navMenu = [
-	{ href: '/', label: 'Home' },
-	{ href: '#features', label: 'Features' },
-	{ href: '#rooms', label: 'Rooms' },
-	{ href: '#news', label: 'News' },
+	{ href: '/', label: 'Beranda' },
+	{ href: '#features', label: 'Fitur' },
+	{ href: '#rooms', label: 'Ruangan' },
+	{ href: '#news', label: 'Berita' },
 ]
 
 export const featuresContent = [

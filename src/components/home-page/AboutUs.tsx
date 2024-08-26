@@ -19,13 +19,13 @@ const AboutUs: FC = () => {
 		<div className='w-full flex flex-col justify-center items-center font-urbanist pt-16 lg:pt-32 gap-10'>
 			<div className='flex flex-col justify-center items-center gap-4'>
 				<h1 className='text-3xl sm:text-[40px] leading-tight font-semibold text-center'>
-					Building Futures <br /> Tiga Serangkai{' '}
-					<span className='text-greenBrand'>SMART Office</span>
+					Mari Membangun Masa Depan Bersama <br /> Tiga Serangkai
+					<span className='text-greenBrand'> SMART Office</span>
 				</h1>
 				<p className='text-greyMuted text-lg max-w-[700px] text-center'>
-					Education is the path to building a civilization. Introducing Tiga
-					Serangkai SMART Office, a milestone in Tiga Serangkai journey towards
-					staying relevant.
+					Pendidikan adalah jalan untuk membangun peradaban. Memperkenalkan Tiga
+					Serangkai SMART Office, tonggak sejarah dalam perjalanan Tiga
+					Serangkai untuk tetap relevan.
 				</p>
 			</div>
 			<div className='w-full grid grid-cols-12 gap-4 lg:gap-8'>

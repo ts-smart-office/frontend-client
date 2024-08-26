@@ -37,7 +37,7 @@ const FormSubscription: FC = () => {
 						<FormItem className='flex-1'>
 							<FormControl>
 								<Input
-									placeholder='Fill your email address'
+									placeholder='Isi alamat email Anda'
 									{...field}
 									className='rounded-full focus-visible:ring-0 focus-visible:border-greenBrand text-base lg:text-lg lg:py-6 px-4'
 								/>
@@ -50,7 +50,7 @@ const FormSubscription: FC = () => {
 					type='submit'
 					className='bg-greenBrand self-center rounded-full w-fit px-8 lg:py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand'
 				>
-					Subscribe now
+					Berlangganan Sekarang
 				</Button>
 			</form>
 		</Form>

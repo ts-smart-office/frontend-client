@@ -9,7 +9,7 @@ const LinkHome: FC = () => {
 			className='flex items-center gap-2 font-urbanist text-darkColor font-semibold py-5'
 		>
 			<ArrowLeftCircleIcon className='w-8 h-8 stroke-1' />
-			Back to homepage
+			Kembali ke beranda
 		</Link>
 	)
 }

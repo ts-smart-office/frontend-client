@@ -128,12 +128,27 @@ const FormReservation: FC<TFormReservationProps> = ({
 	}, [])
 
 	const selectedDatesFull: Date[] = []
+
+	const isFullDayCovered = (date: string) => {
+		const morningReservation = reservedDates.some(
+			r => r.date === date && r.start_time === '08:00' && r.end_time === '12:00'
+		)
+		const afternoonReservation = reservedDates.some(
+			r => r.date === date && r.start_time === '13:00' && r.end_time === '17:00'
+		)
+		return morningReservation && afternoonReservation
+	}
+
 	for (const reservedDate of reservedDates) {
 		if (
-			reservedDate.start_time === '08:00' &&
-			reservedDate.end_time === '17:00'
+			(reservedDate.start_time === '08:00' &&
+				reservedDate.end_time === '17:00') ||
+			isFullDayCovered(reservedDate.date)
 		) {
-			selectedDatesFull.push(new Date(reservedDate.date))
+			const dateObj = new Date(reservedDate.date)
+			if (!selectedDatesFull.some(d => isSameDay(d, dateObj))) {
+				selectedDatesFull.push(dateObj)
+			}
 		}
 	}
 
@@ -149,7 +164,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 					render={({ field }) => (
 						<FormItem className='flex flex-col'>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Reservation date
+								Tanggal Reservasi
 							</FormLabel>
 							<FormControl>
 								<Popover>
@@ -165,7 +180,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 												{field.value ? (
 													format(field.value, 'PPP')
 												) : (
-													<span>Pick a date</span>
+													<span>Pilih tanggal</span>
 												)}
 												<CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
 											</Button>
@@ -179,22 +194,52 @@ const FormReservation: FC<TFormReservationProps> = ({
 												field.onChange(date)
 												setSelectedDate(date)
 											}}
-											disabled={date =>
-												date < new Date() ||
-												isWeekend(date) ||
-												reservedDates.some(reservedDate => {
-													const reservedDateTime = new Date(reservedDate.date)
-													return (
-														isSameDay(date, reservedDateTime) &&
-														reservedDate.start_time === '08:00' &&
-														reservedDate.end_time === '17:00'
-													)
-												})
-											}
+											// disabled={date =>
+											// 	date < new Date() ||
+											// 	isWeekend(date) ||
+											// 	reservedDates.some(reservedDate => {
+											// 		const reservedDateTime = new Date(reservedDate.date)
+											// 		return (
+											// 			isSameDay(date, reservedDateTime) &&
+											// 			reservedDate.start_time === '08:00' &&
+											// 			reservedDate.end_time === '17:00'
+											// 		)
+											// 	})
+											// }
+											disabled={date => {
+												if (date < new Date() || isWeekend(date)) {
+													return true
+												}
+
+												const isDateFullyReserved = reservedDates.some(
+													reservedDate => {
+														const reservedDateTime = new Date(reservedDate.date)
+														return (
+															isSameDay(date, reservedDateTime) &&
+															((reservedDate.start_time === '08:00' &&
+																reservedDate.end_time === '17:00') ||
+																(reservedDates.some(
+																	r =>
+																		isSameDay(date, new Date(r.date)) &&
+																		r.start_time === '08:00' &&
+																		r.end_time === '12:00'
+																) &&
+																	reservedDates.some(
+																		r =>
+																			isSameDay(date, new Date(r.date)) &&
+																			r.start_time === '13:00' &&
+																			r.end_time === '17:00'
+																	)))
+														)
+													}
+												)
+
+												return isDateFullyReserved
+											}}
 											modifiers={{ selectedDatesFull: selectedDatesFull }}
 											modifiersClassNames={{
 												selectedDatesFull:
-													'bg-rose-700 text opacity-100 text-white',
+													'bg-rose-700 bg-opacity-70 text-white',
 											}}
 											initialFocus
 										/>
@@ -211,11 +256,11 @@ const FormReservation: FC<TFormReservationProps> = ({
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Person
+								Tamu
 							</FormLabel>
 							<FormControl>
 								<Input
-									placeholder='Number of guests'
+									placeholder='Jumlah tamu yang akan datang'
 									type='number'
 									{...field}
 									className='border border-greyMuted text-base lg:text-lg lg:py-6 px-4 rounded-full'
@@ -231,7 +276,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 					render={({ field }) => (
 						<FormItem className='space-y-2'>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Reservation type
+								Tipe Reservasi
 							</FormLabel>
 							<FormControl>
 								<RadioGroup
@@ -292,7 +337,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 					(Array.isArray(userRole) && !userRole.includes('Internal'))) && (
 					<div className='flex flex-col'>
 						<p className='text-base lg:text-lg text-greyMuted'>
-							Additional foods (optional)
+							Tambahan Makanan (optional)
 						</p>
 						<FormField
 							control={form.control}
@@ -360,7 +405,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 											<AccordionItem value='item-1'>
 												<AccordionTrigger className='py-2 text-base lg:text-lg hover:no-underline'>
 													<div className='flex w-full justify-between items-center'>
-														Lunch
+														Makan Berat
 														<Button
 															type='button'
 															variant='ghost'
@@ -415,11 +460,11 @@ const FormReservation: FC<TFormReservationProps> = ({
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel className='text-base lg:text-lg text-greyMuted'>
-								Message (optional)
+								Pesan Anda (optional)
 							</FormLabel>
 							<FormControl>
 								<Textarea
-									placeholder='Any message?'
+									placeholder='Tuliskan pesan anda'
 									className='border border-greyMuted rounded-xl text-base lg:text-lg px-4 resize-none'
 									{...field}
 								/>
@@ -437,7 +482,7 @@ const FormReservation: FC<TFormReservationProps> = ({
 							loadBtn ? 'opacity-50 cursor-not-allowed' : ''
 						}`}
 					>
-						{loadBtn ? 'Requesting...' : 'Request reservation now'}
+						{loadBtn ? 'Memesan...' : 'Pesan sekarang'}
 					</Button>
 				</div>
 			</form>

@@ -1,8 +1,15 @@
 import FormSignup from '@/components/auth-page/FormSignup'
+import { getUser } from '@/lib/actions'
 import Image from 'next/image'
+import { redirect } from 'next/navigation'
 import { FC } from 'react'
 
-const page: FC = () => {
+const page: FC = async () => {
+	const user = await getUser()
+	if (user) {
+		return redirect('/')
+	}
+
 	return (
 		<section className='flex w-full max-w-screen-2xl mx-auto min-h-screen items-stretch justify-center p-4 lg:p-8 font-urbanist'>
 			<div className='w-full grid grid-cols-4 md:grid-cols-12 gap-6'>

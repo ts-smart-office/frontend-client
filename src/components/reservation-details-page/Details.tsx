@@ -16,19 +16,30 @@ const Details: FC<TDetailsProps> = ({ details }) => {
 		return null
 	}
 
+	let roomImg
+	if (details.room.name === 'Amphitheatre') {
+		roomImg = '/amphitheater.jpg'
+	} else if (details.room.name === 'Meeting Room') {
+		roomImg = '/meeting-room.jpg'
+	} else if (details.room.name === 'Podcast Studio') {
+		roomImg = '/studio-podcast.jpg'
+	} else {
+		roomImg = '/banner-2.jpg'
+	}
+
 	return (
 		<div className='w-full xl:w-1/2 bg-white rounded-lg'>
 			<div className='flex flex-col'>
 				<div className='relative w-full h-80'>
 					<Image
-						src='/banner-2.jpg'
-						alt='banner-1'
+						src={roomImg}
+						alt={roomImg}
 						fill
 						className='absolute w-full h-full object-cover rounded-t-lg'
 					/>
 				</div>
 				<div className='py-4 xl:py-8 px-2 xl:px-6 flex flex-col gap-8'>
-					<h1 className='text-3xl font-semibold'>Meeting Room</h1>
+					<h1 className='text-3xl font-semibold'>{details.room.name}</h1>
 					<div className='flex flex-col gap-5'>
 						<div className='w-full flex justify-between items-center'>
 							<div className='flex items-center gap-3'>
@@ -48,15 +59,17 @@ const Details: FC<TDetailsProps> = ({ details }) => {
 								{details.type_name}
 							</p>
 						</div>
-						<div className='w-full flex justify-between items-center'>
-							<div className='flex items-center gap-3'>
-								<UserIcon className='w-8 h-8 stroke-1' />
-								<p className='text-base lg:text-xl'>Total persons</p>
+						{details.room.name === 'Podcast Studio' ? null : (
+							<div className='w-full flex justify-between items-center'>
+								<div className='flex items-center gap-3'>
+									<UserIcon className='w-8 h-8 stroke-1' />
+									<p className='text-base lg:text-xl'>Total persons</p>
+								</div>
+								<p className='text-base lg:text-xl text-greyMuted'>
+									{details.total_persons} Persons
+								</p>
 							</div>
-							<p className='text-base lg:text-xl text-greyMuted'>
-								{details.total_persons} Persons
-							</p>
-						</div>
+						)}
 					</div>
 				</div>
 			</div>

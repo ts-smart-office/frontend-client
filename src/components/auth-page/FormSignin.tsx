@@ -1,8 +1,8 @@
-'use client'
-import { FC, useState } from 'react'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+"use client"
+import { FC, useState } from "react"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
 import {
 	Form,
 	FormControl,
@@ -10,15 +10,15 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '../ui/button'
-import { signinSchema } from '@/utils/form-schema'
-import Link from 'next/link'
-import { apiCsrfToken, apiLogin, apiRegisterGoogle } from '@/api/authApi'
-import { handleUser } from '@/lib/actions'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/components/ui/use-toast'
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "../ui/button"
+import { signinSchema } from "@/utils/form-schema"
+import Link from "next/link"
+import { apiCsrfToken, apiLogin, apiRegisterGoogle } from "@/api/authApi"
+import { handleUser } from "@/lib/actions"
+import { useRouter } from "next/navigation"
+import { useToast } from "@/components/ui/use-toast"
 
 const FormSignin: FC = () => {
 	const router = useRouter()
@@ -39,7 +39,7 @@ const FormSignin: FC = () => {
 					description: res.data.message,
 				})
 				setTimeout(function () {
-					router.push('/')
+					router.push("/")
 				}, 1000)
 			})
 			.catch(error => {
@@ -60,20 +60,20 @@ const FormSignin: FC = () => {
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-3'>
+			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
 				<FormField
 					control={form.control}
-					name='email'
+					name="email"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className='text-base lg:text-lg'>
+							<FormLabel className="text-base lg:text-lg">
 								Email address
 							</FormLabel>
 							<FormControl>
 								<Input
-									placeholder='Fill your email address'
+									placeholder="Fill your email address"
 									{...field}
-									className='border-2 rounded-full border-darkColor focus-visible:ring-0 focus-visible:border-greenBrand text-base lg:text-lg lg:py-6 px-4'
+									className="border-2 rounded-full border-darkColor focus-visible:ring-0 focus-visible:border-greenBrand text-base lg:text-lg lg:py-6 px-4"
 								/>
 							</FormControl>
 							<FormMessage />
@@ -82,45 +82,45 @@ const FormSignin: FC = () => {
 				/>
 				<FormField
 					control={form.control}
-					name='password'
+					name="password"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel className='text-base lg:text-lg'>Password</FormLabel>
+							<FormLabel className="text-base lg:text-lg">Password</FormLabel>
 							<FormControl>
 								<Input
-									placeholder='Fill your password'
-									type='password'
+									placeholder="Fill your password"
+									type="password"
 									{...field}
-									className='border-2 rounded-full border-darkColor focus-visible:ring-0 focus-visible:border-greenBrand text-base lg:text-lg lg:py-6 px-4'
+									className="border-2 rounded-full border-darkColor focus-visible:ring-0 focus-visible:border-greenBrand text-base lg:text-lg lg:py-6 px-4"
 								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<p className='text-center'>Or</p>
+				<p className="text-center">Or</p>
 				<Button
-					type='button'
+					type="button"
 					onClick={redirectGoogle}
-					className='text-darkColor bg-greyMuted/20 rounded-full w-full py-6 text-lg hover:bg-opacity-80 hover:bg-greyMuted/20'
+					className="text-darkColor bg-greyMuted/20 rounded-full w-full py-6 text-lg hover:bg-opacity-80 hover:bg-greyMuted/20"
 				>
 					Google
 				</Button>
-				<div className='lg:text-lg'>
-					Don’t have an account?{' '}
-					<span className='font-medium text-greenBrand'>
-						<Link href='/signup'>Sign up</Link>
+				<div className="lg:text-lg">
+					Tidak punya akun?{" "}
+					<span className="font-medium text-greenBrand">
+						<Link href="/signup">Sign up</Link>
 					</span>
 				</div>
-				<div className='flex justify-center pt-4'>
+				<div className="flex justify-center pt-4">
 					<Button
-						type='submit'
+						type="submit"
 						disabled={loadBtn}
 						className={`bg-greenBrand rounded-full w-2/3 lg:w-1/2 py-6 text-lg hover:bg-opacity-80 hover:bg-greenBrand ${
-							loadBtn ? 'opacity-50 cursor-not-allowed' : ''
+							loadBtn ? "opacity-50 cursor-not-allowed" : ""
 						}`}
 					>
-						{loadBtn ? 'Signing in...' : 'Sign in'}
+						{loadBtn ? "Signing in..." : "Sign in"}
 					</Button>
 				</div>
 			</form>

@@ -28,7 +28,10 @@ import { CalendarIcon } from '@heroicons/react/24/outline'
 import { Calendar } from '../ui/calendar'
 import { RadioGroupItem, RadioGroup } from '../ui/radio-group'
 import { Textarea } from '../ui/textarea'
-import { apiCreateReservation } from '@/api/reservationApi'
+import {
+	apiCreateReservation,
+	apiCustomerServicePhone,
+} from '@/api/reservationApi'
 import { useToast } from '../ui/use-toast'
 import { IRoomDetails } from '@/utils/types'
 import { useRouter } from 'next/navigation'
@@ -63,6 +66,7 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 	const [loadBtn, setLoadBtn] = useState<boolean>(false)
 	const [selectedDate, setSelectedDate] = useState<Date | undefined>()
 	const [disabledTimes, setDisabledTimes] = useState<string[]>([])
+	const [csPhone, setCsPhone] = useState<string | null>(null)
 
 	const time = [
 		{ value: '08:00' },
@@ -76,6 +80,19 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 		{ value: '16:00' },
 		{ value: '17:00' },
 	]
+
+	const fetchCustomerServicePhone = async () => {
+		await apiCustomerServicePhone()
+			.then(res => {
+				setCsPhone(res.data.data.value)
+				// console.log(res.data.data.value)
+			})
+			.catch(error => {
+				if (error.response) {
+					console.log(error.response)
+				}
+			})
+	}
 
 	useEffect(() => {
 		const updateDisabledTimes = () => {
@@ -105,6 +122,7 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 		}
 
 		updateDisabledTimes()
+		fetchCustomerServicePhone()
 	}, [selectedDate, reservedDates])
 
 	const getAvailableTimeSlots = () => {
@@ -162,7 +180,13 @@ const FormPodcast: FC<TFormPodcastProps> = ({ details, reservedDates }) => {
 						}`,
 						action: (
 							<ToastAction altText='Hubungi'>
-								<a href={'/'}>Hubungi</a>
+								<a
+									href={`https://wa.me/+62${csPhone}`}
+									target='_blank'
+									rel='noopener noreferrer'
+								>
+									Hubungi
+								</a>
 							</ToastAction>
 						),
 					})

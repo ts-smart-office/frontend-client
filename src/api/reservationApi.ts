@@ -70,3 +70,11 @@ export const apiCancelReservation = (id: string, data: any) => {
 		data: data,
 	})
 }
+
+export const apiCustomerServicePhone = () => {
+	return axiosInstance.get('/api/settings/customer_service_phone', {
+		headers: {
+			accept: 'application/json',
+		},
+	})
+}

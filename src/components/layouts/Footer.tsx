@@ -3,8 +3,6 @@ import { Separator } from '../ui/separator'
 import { navMenu } from '@/utils/constants'
 import Link from 'next/link'
 import { Facebook, Instagram } from 'lucide-react'
-import Term from './Term'
-import Privacy from './Privacy'
 
 const Footer: FC = () => {
 	return (
@@ -28,8 +26,18 @@ const Footer: FC = () => {
 					</div>
 					<div className='flex flex-col gap-2'>
 						<p className='font-semibold text-xl mb-2'>Useful Links</p>
-						<Term />
-						<Privacy />
+						<Link
+							href='/term-of-use'
+							className='font-medium transition-colors duration-300 hover:text-green-brand'
+						>
+							Term
+						</Link>
+						<Link
+							href='/privacy-policy'
+							className='font-medium transition-colors duration-300 hover:text-green-brand'
+						>
+							Privacy
+						</Link>
 					</div>
 					<div className='flex flex-col gap-2'>
 						<p className='font-semibold text-xl mb-2'>Komunitas Kami</p>
